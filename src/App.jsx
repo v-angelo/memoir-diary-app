@@ -7,7 +7,7 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <div className="min-h-screen bg-stone-100 text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-(--bg-primary) text-(--text-primary) transition-colors duration-300">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />

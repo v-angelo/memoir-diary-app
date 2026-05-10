@@ -1,7 +1,128 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #7c3aed;
-  --color-background: #f8f5f2;
-  --color-background-dark: #111827;
+/* DEFAULT THEME */
+:root {
+  --bg-primary: #f8f5f2;
+  --bg-secondary: #ffffff;
+
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+
+  --accent: #7c3aed;
+}
+
+/* DARK */
+.dark {
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+
+  --accent: #8b5cf6;
+}
+
+/* SEPIA */
+.sepia {
+  --bg-primary: #f4ecd8;
+  --bg-secondary: #fffaf0;
+
+  --text-primary: #5b4636;
+  --text-secondary: #7a5c46;
+
+  --accent: #b7791f;
+}
+
+/* FOREST */
+.forest {
+  --bg-primary: #0f1720;
+  --bg-secondary: #1b2a24;
+
+  --text-primary: #e5f3ea;
+  --text-secondary: #b7d4c0;
+
+  --accent: #22c55e;
+}
+
+/* LAVENDER */
+.lavender {
+  --bg-primary: #f5f3ff;
+  --bg-secondary: #ffffff;
+
+  --text-primary: #44337a;
+  --text-secondary: #6b46c1;
+
+  --accent: #a855f7;
+}
+
+/* MIDNIGHT */
+.midnight {
+  --bg-primary: #0b1120;
+  --bg-secondary: #111827;
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+
+  --accent: #38bdf8;
+}
+
+/* COFFEE */
+.coffee {
+  --bg-primary: #2b2118;
+  --bg-secondary: #3a2d22;
+
+  --text-primary: #f5e6d3;
+  --text-secondary: #d6bfa7;
+
+  --accent: #c08457;
+}
+
+/* OCEAN */
+.ocean {
+  --bg-primary: #082f49;
+  --bg-secondary: #0c4a6e;
+
+  --text-primary: #e0f2fe;
+  --text-secondary: #bae6fd;
+
+  --accent: #38bdf8;
+}
+
+/* ROSE */
+.rose {
+  --bg-primary: #fff1f2;
+  --bg-secondary: #ffe4e6;
+
+  --text-primary: #881337;
+  --text-secondary: #9f1239;
+
+  --accent: #f43f5e;
+}
+
+/* GLOBALS */
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+body,
+button,
+input,
+textarea,
+select,
+div,
+section,
+nav,
+header,
+footer,
+a {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }

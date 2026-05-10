@@ -1,7 +1,13 @@
-import React from "react";
+import Navbar from "../components/layout/Navbar";
+import HeroSection from "../components/landing/HeroSection";
 
 function LandingPage() {
-  return <div>LandingPage</div>;
+  return (
+    <>
+      <Navbar />
+      <HeroSection />
+    </>
+  );
 }
 
 export default LandingPage;
