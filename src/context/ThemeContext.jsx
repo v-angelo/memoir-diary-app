@@ -14,13 +14,13 @@ export const themeStyles = {
   },
 
   dark: {
-    bgPrimary: "#111827",
-    bgSecondary: "#1f2937",
+    bgPrimary: "#050505",
+    bgSecondary: "#0f0f0f",
 
-    textPrimary: "#f9fafb",
-    textSecondary: "#d1d5db",
+    textPrimary: "#f5f5f5",
+    textSecondary: "#a1a1aa",
 
-    accent: "#8b5cf6",
+    accent: "#ff7b00",
   },
 
   sepia: {
@@ -43,14 +43,14 @@ export const themeStyles = {
     accent: "#22c55e",
   },
 
-  lavender: {
-    bgPrimary: "#f5f3ff",
-    bgSecondary: "#ffffff",
+  sunset: {
+    bgPrimary: "#1e1b2e",
+    bgSecondary: "#2a243d",
 
-    textPrimary: "#44337a",
-    textSecondary: "#6b46c1",
+    textPrimary: "#fdf2f8",
+    textSecondary: "#f9a8d4",
 
-    accent: "#a855f7",
+    accent: "#fb7185",
   },
 
   midnight: {
@@ -92,6 +92,16 @@ export const themeStyles = {
 
     accent: "#f43f5e",
   },
+
+  matrix: {
+    bgPrimary: "#020617",
+    bgSecondary: "#0f172a",
+
+    textPrimary: "#dcfce7",
+    textSecondary: "#86efac",
+
+    accent: "#39ff14",
+  },
 };
 
 const themes = [
@@ -99,23 +109,25 @@ const themes = [
   "dark",
   "sepia",
   "forest",
-  "lavender",
+  "sunset",
   "midnight",
   "coffee",
   "rose",
   "ocean",
+  "matrix",
 ];
 
 const themeColors = {
   light: "#7c3aed",
-  dark: "#8b5cf6",
+  dark: "#ff7b00",
   sepia: "#b7791f",
   forest: "#22c55e",
-  lavender: "#a855f7",
+  sunset: "#fb7185",
   midnight: "#38bdf8",
   coffee: "#c08457",
   ocean: "#38bdf8",
   rose: "#f43f5e",
+  matrix: "#39ff14",
 };
 
 function ThemeProvider({ children }) {

@@ -12,14 +12,15 @@
 }
 
 /* DARK */
+
 .dark {
-  --bg-primary: #111827;
-  --bg-secondary: #1f2937;
+  --bg-primary: #050505;
+  --bg-secondary: #0f0f0f;
 
-  --text-primary: #f9fafb;
-  --text-secondary: #d1d5db;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a1a1aa;
 
-  --accent: #8b5cf6;
+  --accent: #ff7b00;
 }
 
 /* SEPIA */
@@ -44,15 +45,16 @@
   --accent: #22c55e;
 }
 
-/* LAVENDER */
-.lavender {
-  --bg-primary: #f5f3ff;
-  --bg-secondary: #ffffff;
+/* SUNSET */
 
-  --text-primary: #44337a;
-  --text-secondary: #6b46c1;
+.sunset {
+  --bg-primary: #1e1b2e;
+  --bg-secondary: #2a243d;
 
-  --accent: #a855f7;
+  --text-primary: #fdf2f8;
+  --text-secondary: #f9a8d4;
+
+  --accent: #fb7185;
 }
 
 /* MIDNIGHT */
@@ -97,6 +99,18 @@
   --text-secondary: #9f1239;
 
   --accent: #f43f5e;
+}
+
+/* MATRIX */
+
+.matrix {
+  --bg-primary: #020617;
+  --bg-secondary: #0f172a;
+
+  --text-primary: #dcfce7;
+  --text-secondary: #86efac;
+
+  --accent: #39ff14;
 }
 
 /* GLOBALS */
