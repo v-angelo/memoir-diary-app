@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 
+import { ThemeContext, themeStyles } from "../../context/ThemeContext";
+import { useContext } from "react";
+
 function HeroSection() {
+  const { theme } = useContext(ThemeContext);
+
+  const colors = themeStyles[theme];
   return (
     <section className="relative mx-auto max-w-7xl overflow-hidden px-6 py-24 md:py-32">
       <div className="grid items-center gap-16 md:grid-cols-2">
@@ -31,15 +37,33 @@ function HeroSection() {
 
           <div className="mt-10 flex flex-wrap gap-4">
             <Link to="/register">
-              <button className="rounded-2xl bg-(--accent) px-7 py-3 text-lg font-medium text-white transition hover:scale-105">
+              <motion.button
+                initial={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 1 }}
+                transition={{
+                  duration: 0.2,
+                  ease: "easeOut",
+                }}
+                className="cursor-pointer rounded-2xl bg-(--accent) px-7 py-3 text-lg font-medium text-white shadow-lg shadow-black/10"
+              >
                 Start Writing
-              </button>
+              </motion.button>
             </Link>
 
             <a href="#features">
-              <button className="rounded-2xl border border-white/10 bg-(--bg-secondary) px-7 py-3 text-lg font-medium transition hover:border-(--accent)">
+              <motion.button
+                initial={{ scale: 0.98 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 1 }}
+                transition={{
+                  duration: 0.2,
+                  ease: "easeOut",
+                }}
+                className="cursor-pointer rounded-2xl border border-white/10 bg-(--bg-secondary) px-7 py-3 text-lg font-medium shadow-lg shadow-black/5 hover:border-(--accent)"
+              >
                 Explore Features
-              </button>
+              </motion.button>
             </a>
           </div>
         </motion.div>
@@ -54,7 +78,16 @@ function HeroSection() {
         >
           {/* MAIN CARD */}
 
-          <div className="rounded-3xl border border-white/10 bg-(--bg-secondary) p-8 shadow-2xl">
+          <motion.div
+            animate={{
+              backgroundColor: colors.bgSecondary,
+            }}
+            transition={{
+              duration: 0.4,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="rounded-3xl border border-white/10 p-8 shadow-2xl"
+          >
             {/* TOP BAR */}
 
             <div className="mb-8 flex items-center gap-2">
@@ -86,7 +119,7 @@ function HeroSection() {
                 Personal
               </span>
             </div>
-          </div>
+          </motion.div>
 
           {/* BACKGROUND GLOW */}
 

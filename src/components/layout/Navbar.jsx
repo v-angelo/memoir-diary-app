@@ -1,14 +1,30 @@
 import { Link } from "react-router-dom";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { motion } from "motion/react";
 
 import ThemeSelector from "./ThemeSelector";
+import { ThemeContext, themeStyles } from "../../context/ThemeContext";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const { theme } = useContext(ThemeContext);
+
+  const colors = themeStyles[theme];
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-(--bg-primary)/80 backdrop-blur-md">
+    <motion.header
+      animate={{
+        backgroundColor: colors.bgPrimary,
+        color: colors.textPrimary,
+      }}
+      transition={{
+        duration: 0.4,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md"
+    >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* LOGO */}
 
@@ -72,7 +88,7 @@ function Navbar() {
           <ThemeSelector />
         </div>
       )}
-    </header>
+    </motion.header>
   );
 }
 
