@@ -119,3 +119,20 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
 }
+
+.Toastify__toast {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.Toastify__close-button {
+  color: var(--text-primary) !important;
+}
+
+.Toastify__progress-bar {
+  background: var(--accent) !important;
+}

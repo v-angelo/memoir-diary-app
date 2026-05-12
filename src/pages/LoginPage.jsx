@@ -13,7 +13,14 @@ import { ThemeContext, themeStyles } from "../context/ThemeContext";
 
 import { loginSchema } from "../validation/loginSchema";
 
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { loginAPI } from "../services/authService";
+
 function LoginPage() {
+  const navigate = useNavigate();
+
   const { theme } = useContext(ThemeContext);
 
   const colors = themeStyles[theme];
@@ -26,10 +33,21 @@ function LoginPage() {
 
     validationSchema: loginSchema,
 
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const response = await loginAPI(values);
 
-      // login API call here
+        toast.success(response.message);
+
+        // save user data
+        sessionStorage.setItem("user", JSON.stringify(response.data.user));
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1500);
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Login failed!");
+      }
     },
   });
 
@@ -114,7 +132,7 @@ function LoginPage() {
                   touched={formik.touched.password}
                 />
 
-                <AuthButton>Login</AuthButton>
+                <AuthButton type="submit">Login</AuthButton>
               </form>
 
               <p className="mt-6 text-center text-(--text-secondary)">

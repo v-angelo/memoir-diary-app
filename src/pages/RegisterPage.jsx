@@ -13,14 +13,20 @@ import { ThemeContext, themeStyles } from "../context/ThemeContext";
 
 import { registerSchema } from "../validation/registerSchema";
 
+import { registerAPI } from "../services/authService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 function RegisterPage() {
+  const navigate = useNavigate();
+
   const { theme } = useContext(ThemeContext);
 
   const colors = themeStyles[theme];
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -28,10 +34,18 @@ function RegisterPage() {
 
     validationSchema: registerSchema,
 
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const response = await registerAPI(values);
 
-      // register API call here
+        toast.success(response.message);
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Registration failed!");
+      }
     },
   });
 
@@ -99,20 +113,20 @@ function RegisterPage() {
                 <AuthInput
                   label="Full Name"
                   type="text"
-                  name="name"
-                  placeholder="V Angelo"
-                  value={formik.values.name}
+                  name="username"
+                  placeholder="Username"
+                  value={formik.values.username}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  error={formik.errors.name}
-                  touched={formik.touched.name}
+                  error={formik.errors.username}
+                  touched={formik.touched.username}
                 />
 
                 <AuthInput
                   label="Email"
                   type="email"
                   name="email"
-                  placeholder="angelo@example.com"
+                  placeholder="xyz@example.com"
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -144,7 +158,7 @@ function RegisterPage() {
                   touched={formik.touched.confirmPassword}
                 />
 
-                <AuthButton>Create Account</AuthButton>
+                <AuthButton type="submit">Create Account</AuthButton>
               </form>
 
               <p className="mt-6 text-center text-(--text-secondary)">
