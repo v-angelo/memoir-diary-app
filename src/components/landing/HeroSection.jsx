@@ -8,11 +8,17 @@ function HeroSection() {
   const { theme } = useContext(ThemeContext);
 
   const colors = themeStyles[theme];
-  return (
-    <section className="relative mx-auto max-w-7xl overflow-hidden px-6 py-24 md:py-32">
-      <div className="grid items-center gap-16 md:grid-cols-2">
-        {/* LEFT CONTENT */}
 
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  return (
+    <section className="relative mx-auto max-w-7xl items-center overflow-hidden px-6 py-10 lg:py-14">
+      <div className="grid items-center gap-16 lg:grid-cols-2">
+        {/* left content */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -33,8 +39,7 @@ function HeroSection() {
             experiences, emotions, and ideas in a calm and beautiful space.
           </p>
 
-          {/* BUTTONS */}
-
+          {/* buttons */}
           <div className="mt-10 flex flex-wrap gap-4">
             <Link to="/register">
               <motion.button
@@ -68,16 +73,14 @@ function HeroSection() {
           </div>
         </motion.div>
 
-        {/* RIGHT SIDE */}
-
+        {/* right content */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7 }}
           className="relative"
         >
-          {/* MAIN CARD */}
-
+          {/* main card */}
           <motion.div
             animate={{
               backgroundColor: colors.bgSecondary,
@@ -88,17 +91,17 @@ function HeroSection() {
             }}
             className="rounded-3xl border border-white/10 p-8 shadow-2xl"
           >
-            {/* TOP BAR */}
-
+            {/* top bar */}
             <div className="mb-8 flex items-center gap-2">
               <div className="h-3 w-3 rounded-full bg-red-400"></div>
               <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
               <div className="h-3 w-3 rounded-full bg-green-400"></div>
             </div>
 
-            {/* MOCK JOURNAL */}
-
-            <p className="mb-3 text-sm text-(--text-secondary)">May 10, 2026</p>
+            {/* mock journal */}
+            <p className="mb-3 text-sm text-(--text-secondary)">
+              {currentDate}
+            </p>
 
             <h3 className="mb-4 text-2xl font-semibold">A peaceful evening.</h3>
 
@@ -108,8 +111,7 @@ function HeroSection() {
               stay hidden in my mind...
             </p>
 
-            {/* TAGS */}
-
+            {/* tags */}
             <div className="mt-8 flex flex-wrap gap-3">
               <span className="rounded-full bg-(--accent)/20 px-4 py-1 text-sm text-(--accent)">
                 Reflection
@@ -121,9 +123,8 @@ function HeroSection() {
             </div>
           </motion.div>
 
-          {/* BACKGROUND GLOW */}
-
-          <div className="absolute top-10 right-10 -z-10 h-72 w-72 rounded-full bg-(--accent)/20 blur-3xl" />
+          {/* background glow */}
+          <div className="absolute top-7 right-10 h-72 w-72 rounded-full bg-(--accent)/20 blur-3xl" />
         </motion.div>
       </div>
     </section>

@@ -61,16 +61,13 @@ function RegisterPage() {
       }}
       className="min-h-screen"
     >
-      {/* NAVBAR */}
-
+      {/* navbar */}
       <Navbar />
 
-      {/* MAIN SECTION */}
-
-      <main className="px-6 py-12">
+      {/* main section */}
+      <main className="px-6 py-5">
         <div className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl items-center gap-16 lg:grid-cols-2">
-          {/* LEFT CONTENT */}
-
+          {/* left content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -95,8 +92,7 @@ function RegisterPage() {
             </p>
           </motion.div>
 
-          {/* REGISTER CARD */}
-
+          {/* register card */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}

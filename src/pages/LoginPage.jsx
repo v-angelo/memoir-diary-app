@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { loginAPI } from "../services/authService";
+import { AuthContext } from "../context/AuthContext";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ function LoginPage() {
   const { theme } = useContext(ThemeContext);
 
   const colors = themeStyles[theme];
+
+  const { login } = useContext(AuthContext);
 
   const formik = useFormik({
     initialValues: {
@@ -40,7 +43,7 @@ function LoginPage() {
         toast.success(response.message);
 
         // save user data
-        sessionStorage.setItem("user", JSON.stringify(response.data.user));
+        login(response.data.user, response.data.token);
 
         setTimeout(() => {
           navigate("/dashboard");
@@ -65,10 +68,9 @@ function LoginPage() {
     >
       <Navbar />
 
-      <main className="px-6 py-12">
+      <main className="px-6 py-10">
         <div className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl items-center gap-16 lg:grid-cols-2">
-          {/* LEFT CONTENT */}
-
+          {/* left content */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -93,8 +95,7 @@ function LoginPage() {
             </p>
           </motion.div>
 
-          {/* LOGIN CARD */}
-
+          {/* login card */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,7 +113,7 @@ function LoginPage() {
                   label="Email"
                   type="email"
                   name="email"
-                  placeholder="angelo@example.com"
+                  placeholder="xyz@example.com"
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}

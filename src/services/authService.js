@@ -1,9 +1,6 @@
 import apiService from "../api/apiService";
 
-/* =========================
-   REGISTER USER
-========================= */
-
+// register user
 export const registerAPI = async (reqBody) => {
   try {
     const response = await apiService("POST", "/register", reqBody);
@@ -14,16 +11,12 @@ export const registerAPI = async (reqBody) => {
   }
 };
 
-/* =========================
-   LOGIN USER
-========================= */
-
+// login user
 export const loginAPI = async (reqBody) => {
   try {
     const response = await apiService("POST", "/login", reqBody);
 
     // save token if login successful
-
     if (response?.data?.token) {
       sessionStorage.setItem("token", response?.data?.token);
     }
@@ -34,10 +27,7 @@ export const loginAPI = async (reqBody) => {
   }
 };
 
-/* =========================
-   GET CURRENT USER
-========================= */
-
+// get current user
 export const getCurrentUserAPI = async () => {
   try {
     const response = await apiService("GET", "/me");
@@ -48,10 +38,7 @@ export const getCurrentUserAPI = async () => {
   }
 };
 
-/* =========================
-   LOGOUT USER
-========================= */
-
+// logout user
 export const logoutAPI = () => {
   sessionStorage.removeItem("token");
 };

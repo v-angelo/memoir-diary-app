@@ -131,8 +131,20 @@ const themeColors = {
 };
 
 function ThemeProvider({ children }) {
+  // get system theme
+  const getSystemTheme = () => {
+    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
+
+    // console.log("System theme:", systemTheme);
+
+    return systemTheme;
+  };
+
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "light";
+    return localStorage.getItem("theme") || getSystemTheme();
   });
 
   useEffect(() => {
