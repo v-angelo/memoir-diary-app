@@ -88,7 +88,7 @@ function Dashboard() {
             className="mt-10"
           >
             <Link
-              to="/new-entry"
+              to="/journal"
               className="inline-flex items-center gap-2 rounded-2xl bg-(--accent) px-6 py-4 font-semibold text-white"
             >
               <HiOutlinePlus />
@@ -117,7 +117,7 @@ function Dashboard() {
               </p>
 
               <Link
-                to="/new-entry"
+                to="/journal"
                 className="mt-6 inline-flex rounded-2xl bg-(--accent) px-5 py-3 font-medium text-white"
               >
                 Write First Entry

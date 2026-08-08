@@ -113,12 +113,14 @@
   --accent: #39ff14;
 }
 
-/* GLOBALS */
+/* Global styles */
 
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
 }
+
+/* Toastify styles */
 
 .Toastify__toast {
   background: var(--bg-secondary) !important;
@@ -135,4 +137,101 @@ body {
 
 .Toastify__progress-bar {
   background: var(--accent) !important;
+}
+
+/* CALENDAR STYLES */
+
+.memoir-calendar .rdp-root {
+  --rdp-cell-size: 42px;
+  --rdp-accent-color: var(--accent);
+
+  width: 100%;
+  color: var(--text-primary);
+}
+
+/* layout */
+.memoir-calendar .rdp-months {
+  justify-content: center;
+}
+
+.memoir-calendar .rdp-month {
+  width: 100%;
+}
+
+.memoir-calendar .rdp-caption {
+  margin-bottom: 1rem;
+}
+
+.memoir-calendar .rdp-weeks {
+  transition: all 0.2s ease;
+}
+
+/* header */
+.memoir-calendar .rdp-caption_label {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.memoir-calendar .rdp-weekday {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* navigation */
+.memoir-calendar .rdp-nav_button {
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.memoir-calendar .rdp-nav_button:hover {
+  background-color: var(--bg-primary);
+}
+
+/* days */
+.memoir-calendar .rdp-day_button {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 12px;
+  color: var(--text-primary);
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.memoir-calendar .rdp-day_button:hover {
+  background-color: var(--bg-primary);
+  transform: scale(1.03);
+}
+
+/* selected Day */
+.memoir-calendar .rdp-selected .rdp-day_button {
+  background-color: var(--accent);
+  color: white;
+  font-weight: 600;
+
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.memoir-calendar .rdp-selected .rdp-day_button:hover {
+  background-color: var(--accent);
+}
+
+/* today */
+.memoir-calendar .rdp-today:not(.rdp-selected) .rdp-day_button {
+  border: 1px solid var(--accent);
+}
+
+/* outside Month */
+.memoir-calendar .rdp-outside {
+  opacity: 0.35;
+}
+
+/* disabled Days */
+.memoir-calendar .rdp-disabled {
+  opacity: 0.25;
 }

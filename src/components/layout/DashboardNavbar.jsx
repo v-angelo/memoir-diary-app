@@ -25,7 +25,7 @@ function DashboardNavbar() {
       }}
       className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md"
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 py-4">
         {/* logo */}
         <Link to="/" className="text-3xl font-bold tracking-tight">
           Memoir
@@ -43,12 +43,12 @@ function DashboardNavbar() {
           </Link>
 
           <Link
-            to="/entries"
+            to="/journal"
             className={`transition-colors hover:text-(--accent) ${
-              location.pathname === "/entries" ? "text-(--accent)" : ""
+              location.pathname === "/journal" ? "text-(--accent)" : ""
             }`}
           >
-            My Entries
+            Journal
           </Link>
         </div>
 

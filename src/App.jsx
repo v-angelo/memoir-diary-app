@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicRoute from "./components/auth/PublicRoute";
+import Journal from "./pages/Journal";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -59,6 +60,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/journal"
+            element={
+              <ProtectedRoute>
+                <Journal />
               </ProtectedRoute>
             }
           />

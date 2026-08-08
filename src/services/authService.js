@@ -16,11 +16,6 @@ export const loginAPI = async (reqBody) => {
   try {
     const response = await apiService("POST", "/login", reqBody);
 
-    // save token if login successful
-    if (response?.data?.token) {
-      sessionStorage.setItem("token", response?.data?.token);
-    }
-
     return response;
   } catch (error) {
     throw error;
