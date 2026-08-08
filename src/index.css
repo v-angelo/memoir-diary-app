@@ -113,14 +113,14 @@
   --accent: #39ff14;
 }
 
-/* Global styles */
+/* GLOBAL STYLES */
 
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
 }
 
-/* Toastify styles */
+/* TOASTIFY STYLES */
 
 .Toastify__toast {
   background: var(--bg-secondary) !important;
@@ -208,7 +208,7 @@ body {
   transform: scale(1.03);
 }
 
-/* selected Day */
+/* selected day */
 .memoir-calendar .rdp-selected .rdp-day_button {
   background-color: var(--accent);
   color: white;
@@ -226,12 +226,20 @@ body {
   border: 1px solid var(--accent);
 }
 
-/* outside Month */
+/* outside month */
 .memoir-calendar .rdp-outside {
   opacity: 0.35;
 }
 
-/* disabled Days */
+/* disabled days */
 .memoir-calendar .rdp-disabled {
   opacity: 0.25;
+}
+
+/* activity indicator */
+.memoir-calendar .has-entry .rdp-day_button {
+  background-color: color-mix(in srgb, var(--accent) 11%, transparent);
+}
+.memoir-calendar .rdp-selected .rdp-day_button {
+  background-color: var(--accent);
 }

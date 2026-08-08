@@ -7,6 +7,7 @@ import JournalCalendar from "../components/layout/JournalCalendar";
 import { ThemeContext, themeStyles } from "../context/ThemeContext";
 import { getEntriesByDateAPI } from "../services/entryService";
 import DashboardNavbar from "../components/layout/DashboardNavbar";
+import EntryCard from "../components/layout/EntryCard";
 
 function Journal() {
   const { theme } = useContext(ThemeContext);
@@ -20,16 +21,6 @@ function Journal() {
   const [showEditor, setShowEditor] = useState(false);
 
   const [selectedEntry, setSelectedEntry] = useState(null);
-
-  const moodMap = {
-    happy: "😊",
-    excited: "🤩",
-    calm: "😌",
-    productive: "💪",
-    sad: "😔",
-    angry: "😠",
-    anxious: "😰",
-  };
 
   useEffect(() => {
     loadEntries();
@@ -76,7 +67,7 @@ function Journal() {
           duration: 0.4,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="lg:h-[calc(100vh-80px)] lg:overflow-hidden"
+        className=""
       >
         <div className="mx-auto flex h-full max-w-7xl flex-col px-6 py-6">
           {/* header */}
@@ -98,7 +89,7 @@ function Journal() {
           </motion.div>
 
           {/* main layout */}
-          <div className="mt-4 grid min-h-0 flex-1 gap-6 lg:grid-cols-12">
+          <div className="mt-4 grid gap-6 lg:grid-cols-12">
             {/* calendar panel */}
             <motion.div
               initial={{
@@ -112,14 +103,15 @@ function Journal() {
               transition={{
                 delay: 0.1,
               }}
-              className="flex flex-col overflow-hidden rounded-3xl bg-(--bg-secondary) p-6 lg:col-span-4"
+              className="flex flex-col rounded-3xl bg-(--bg-secondary) p-6 lg:col-span-4 lg:h-140 2xl:h-160"
             >
-              <h2 className="mb-4 text-xl font-semibold">Calendar</h2>
+              <h2 className="mb-4 text-2xl font-semibold">Calendar</h2>
 
-              <div className="flex justify-center overflow-hidden">
+              <div className="flex justify-center">
                 <JournalCalendar
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
+                  formatDate={formatDate}
                 />
               </div>
             </motion.div>
@@ -137,10 +129,10 @@ function Journal() {
               transition={{
                 delay: 0.2,
               }}
-              className="flex min-h-0 flex-col overflow-hidden rounded-3xl bg-(--bg-secondary) p-6 lg:col-span-8"
+              className="flex flex-col rounded-3xl bg-(--bg-secondary) p-6 lg:col-span-8 lg:h-140 2xl:h-160"
             >
               {/* top bar */}
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">
                     {selectedDate.toDateString()}
@@ -168,71 +160,55 @@ function Journal() {
 
               {/* entries list */}
               <div className="mt-6 flex-1 overflow-y-auto p-1">
-                <AnimatePresence mode="wait">
+                {entries.length === 0 ? (
                   <motion.div
-                    key={selectedDate.toDateString()}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                    className="space-y-4"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex h-full flex-col items-center justify-center text-center"
                   >
-                    {entries.map((entry, index) => (
-                      <motion.div
-                        key={entry._id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        whileHover={{
-                          boxShadow: "inset 0 0 0 1px var(--accent)",
-                        }}
-                        transition={{
-                          opacity: {
-                            duration: 0.25,
-                            delay: index * 0.05,
-                          },
-                          y: {
-                            duration: 0.25,
-                            delay: index * 0.05,
-                          },
-                          boxShadow: {
-                            duration: 0.08,
-                          },
-                        }}
-                        className="cursor-pointer rounded-2xl border border-transparent bg-(--bg-primary) p-5"
-                        onClick={() => handleEditEntry(entry)}
-                      >
-                        {/* header */}
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-center gap-2">
-                            <h3 className="text-lg font-semibold">
-                              {entry.title}
-                            </h3>
+                    <HiOutlineBookOpen
+                      className="mb-4 text-(--accent)"
+                      size={64}
+                    />
 
-                            {entry.mood && (
-                              <span className="rounded-full bg-(--accent) px-2 py-1 text-xs text-white">
-                                {moodMap[entry.mood]}{" "}
-                                {entry.mood.charAt(0).toUpperCase() +
-                                  entry.mood.slice(1)}
-                              </span>
-                            )}
-                          </div>
+                    <h3 className="text-xl font-semibold">No entries yet</h3>
 
-                          <span className="text-sm text-(--text-secondary)">
-                            {new Date(entry.createdAt).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </span>
-                        </div>
+                    <p className="mt-2 max-w-sm text-(--text-secondary)">
+                      No entries for this day Every memory starts with a single
+                      page. Write your first entry and begin capturing the story
+                      of this day.
+                    </p>
 
-                        {/* content */}
-                        <p className="mt-3 line-clamp-3 text-(--text-secondary)">
-                          {entry.content}
-                        </p>
-                      </motion.div>
-                    ))}
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={handleCreateEntry}
+                      className="mt-6 cursor-pointer rounded-xl bg-(--accent) px-5 py-3 font-medium text-white"
+                    >
+                      Create First Entry
+                    </motion.button>
                   </motion.div>
-                </AnimatePresence>
+                ) : (
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={selectedDate.toDateString()}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="space-y-4"
+                    >
+                      {entries.map((entry, index) => (
+                        <EntryCard
+                          key={entry._id}
+                          entry={entry}
+                          index={index}
+                          onClick={handleEditEntry}
+                        />
+                      ))}
+                    </motion.div>
+                  </AnimatePresence>
+                )}
               </div>
             </motion.div>
           </div>

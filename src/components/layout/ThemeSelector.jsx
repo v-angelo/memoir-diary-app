@@ -39,7 +39,7 @@ function ThemeSelector() {
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       {/* active theme color*/}
       <div
         className="h-4 w-4 rounded-full border border-white/20"
@@ -52,7 +52,7 @@ function ThemeSelector() {
       <select
         value={theme}
         onChange={(e) => handleThemeChange(e.target.value)}
-        className="cursor-pointer rounded-xl border border-white/10 bg-(--bg-secondary) px-3 py-2 text-(--text-primary) outline-none"
+        className="min-w-0 cursor-pointer rounded-xl border border-white/10 bg-(--bg-secondary) px-3 py-2 text-(--text-primary) outline-none"
       >
         <optgroup label="Free Themes">
           {publicThemes.map((t) => (

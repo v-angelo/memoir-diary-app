@@ -26,7 +26,7 @@ function Dashboard() {
           duration: 0.4,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="min-h-screen"
+        className="z-0 min-h-screen"
       >
         <div className="mx-auto max-w-6xl px-6 py-12">
           {/* header */}

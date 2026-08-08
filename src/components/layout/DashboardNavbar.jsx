@@ -6,6 +6,8 @@ import ThemeSelector from "./ThemeSelector";
 import { ThemeContext, themeStyles } from "../../context/ThemeContext";
 import { AuthContext } from "../../context/AuthContext";
 
+import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
+
 function DashboardNavbar() {
   const { theme } = useContext(ThemeContext);
   const { user, logout } = useContext(AuthContext);
@@ -25,7 +27,7 @@ function DashboardNavbar() {
       }}
       className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md"
     >
-      <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
         {/* logo */}
         <Link to="/" className="text-3xl font-bold tracking-tight">
           Memoir
@@ -64,9 +66,11 @@ function DashboardNavbar() {
 
           <button
             onClick={logout}
-            className="flex cursor-pointer items-center justify-center rounded-xl border border-(--accent) px-5 py-2.5 text-(--accent) transition hover:bg-(--accent) hover:text-white"
+            className="flex cursor-pointer items-center justify-center rounded-xl border border-(--accent) px-4 py-2.5 text-(--accent) transition hover:bg-(--accent) hover:text-white"
           >
-            Logout
+            <HiOutlineArrowRightOnRectangle className="text-xl md:hidden" />
+
+            <span className="hidden md:inline">Logout</span>
           </button>
         </div>
       </nav>

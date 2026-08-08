@@ -3,7 +3,14 @@ import { motion } from "motion/react";
 
 import "react-day-picker/dist/style.css";
 
-function JournalCalendar({ selectedDate, setSelectedDate, className = "" }) {
+function JournalCalendar({
+  selectedDate,
+  setSelectedDate,
+  formatDate,
+  className = "",
+}) {
+  const entryDates = [];
+
   return (
     <motion.div
       initial={{
@@ -23,6 +30,12 @@ function JournalCalendar({ selectedDate, setSelectedDate, className = "" }) {
         mode="single"
         selected={selectedDate}
         onSelect={(date) => date && setSelectedDate(date)}
+        modifiers={{
+          hasEntry: (date) => entryDates.includes(formatDate(date)),
+        }}
+        modifiersClassNames={{
+          hasEntry: "has-entry",
+        }}
         animate
         showOutsideDays
       />
