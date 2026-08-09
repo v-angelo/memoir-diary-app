@@ -25,3 +25,12 @@ export const formatTime = (time) => {
     hour12: true,
   });
 };
+
+export const getInitials = (name = "") => {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0].toUpperCase())
+    .join("");
+};

@@ -1,12 +1,17 @@
-import { useContext } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 
 import ThemeSelector from "./ThemeSelector";
 import { ThemeContext, themeStyles } from "../../context/ThemeContext";
 import { AuthContext } from "../../context/AuthContext";
+import { getInitials } from "../../utilities/journalUtils";
 
-import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
+import {
+  HiOutlineArrowRightOnRectangle,
+  HiOutlineUser,
+  HiChevronDown,
+} from "react-icons/hi2";
 
 function DashboardNavbar() {
   const { theme } = useContext(ThemeContext);
@@ -14,6 +19,23 @@ function DashboardNavbar() {
 
   const colors = themeStyles[theme];
   const location = useLocation();
+
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <motion.header
@@ -58,20 +80,64 @@ function DashboardNavbar() {
         <div className="flex items-center gap-4">
           <ThemeSelector />
 
-          <div className="hidden text-right md:block">
-            <p className="font-medium">{user?.username}</p>
+          <div ref={menuRef} className="relative">
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 transition hover:bg-(--bg-secondary)"
+            >
+              {user?.profilePic ? (
+                <img
+                  src={user.profilePic}
+                  alt={user.username}
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-(--accent) font-semibold text-white">
+                  {getInitials(user?.username)}
+                </div>
+              )}
 
-            <p className="text-sm text-(--text-secondary)">{user?.email}</p>
+              <span className="hidden font-medium md:block">
+                {user?.username}
+              </span>
+
+              <HiChevronDown />
+            </button>
+
+            {showMenu && (
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  y: -10,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                className="absolute right-0 mt-3 w-52 overflow-hidden rounded-2xl border border-white/10 bg-(--bg-secondary) shadow-xl"
+              >
+                <Link
+                  to="/profile"
+                  onClick={() => setShowMenu(false)}
+                  className="flex items-center gap-3 px-4 py-3 transition hover:bg-(--bg-primary)"
+                >
+                  <HiOutlineUser />
+                  Profile
+                </Link>
+
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    logout();
+                  }}
+                  className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition hover:bg-(--bg-primary)"
+                >
+                  <HiOutlineArrowRightOnRectangle />
+                  Logout
+                </button>
+              </motion.div>
+            )}
           </div>
-
-          <button
-            onClick={logout}
-            className="flex cursor-pointer items-center justify-center rounded-xl border border-(--accent) px-4 py-2.5 text-(--accent) transition hover:bg-(--accent) hover:text-white"
-          >
-            <HiOutlineArrowRightOnRectangle className="text-xl md:hidden" />
-
-            <span className="hidden md:inline">Logout</span>
-          </button>
         </div>
       </nav>
     </motion.header>

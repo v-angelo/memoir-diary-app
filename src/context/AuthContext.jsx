@@ -29,6 +29,7 @@ function AuthProvider({ children }) {
         user,
         login,
         logout,
+        updateUser: setUser,
         isAuthenticated: !!user,
       }}
     >

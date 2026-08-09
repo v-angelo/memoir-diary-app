@@ -14,3 +14,7 @@ export const getCurrentUserAPI = () => apiService("GET", "/me");
 export const logoutAPI = () => {
   sessionStorage.removeItem("token");
 };
+
+// update user details
+export const updateUserAPI = (userId, reqBody) =>
+  apiService("PUT", `/user/${userId}`, reqBody);

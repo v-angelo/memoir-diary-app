@@ -275,12 +275,13 @@ function Journal() {
                       size={64}
                     />
 
-                    <h3 className="text-xl font-semibold">No entries yet</h3>
+                    <h3 className="text-xl font-semibold">
+                      No entries for this day{" "}
+                    </h3>
 
                     <p className="mt-2 max-w-sm text-(--text-secondary)">
-                      No entries for this day Every memory starts with a single
-                      page. Write your first entry and begin capturing the story
-                      of this day.
+                      Every memory starts with a single page. Write your first
+                      entry and begin capturing the story of this day.
                     </p>
 
                     <motion.button
