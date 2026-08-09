@@ -69,6 +69,15 @@ function Journal() {
     }
   };
 
+  const formatDisplayDate = (date) => {
+    return date.toLocaleDateString("en-GB", {
+      weekday: "long",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   const handleCreateEntry = () => {
     setSelectedEntry(null);
     setShowEditor(true);
@@ -230,7 +239,7 @@ function Journal() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h2 className="text-2xl font-semibold">
-                    {selectedDate.toDateString()}
+                    {formatDisplayDate(selectedDate)}
                   </h2>
 
                   <p className="text-(--text-secondary)">
