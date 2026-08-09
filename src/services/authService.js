@@ -1,37 +1,14 @@
 import apiService from "../api/apiService";
 
 // register user
-export const registerAPI = async (reqBody) => {
-  try {
-    const response = await apiService("POST", "/register", reqBody);
-
-    return response;
-  } catch (error) {
-    throw error;
-  }
-};
+export const registerAPI = (reqBody) =>
+  apiService("POST", "/register", reqBody);
 
 // login user
-export const loginAPI = async (reqBody) => {
-  try {
-    const response = await apiService("POST", "/login", reqBody);
-
-    return response;
-  } catch (error) {
-    throw error;
-  }
-};
+export const loginAPI = (reqBody) => apiService("POST", "/login", reqBody);
 
 // get current user
-export const getCurrentUserAPI = async () => {
-  try {
-    const response = await apiService("GET", "/me");
-
-    return response;
-  } catch (error) {
-    throw error;
-  }
-};
+export const getCurrentUserAPI = () => apiService("GET", "/me");
 
 // logout user
 export const logoutAPI = () => {

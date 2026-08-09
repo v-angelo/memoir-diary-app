@@ -7,10 +7,9 @@ function JournalCalendar({
   selectedDate,
   setSelectedDate,
   formatDate,
+  entryDates,
   className = "",
 }) {
-  const entryDates = [];
-
   return (
     <motion.div
       initial={{
@@ -31,7 +30,7 @@ function JournalCalendar({
         selected={selectedDate}
         onSelect={(date) => date && setSelectedDate(date)}
         modifiers={{
-          hasEntry: (date) => entryDates.includes(formatDate(date)),
+          hasEntry: (date) => entryDates?.includes(formatDate(date)),
         }}
         modifiersClassNames={{
           hasEntry: "has-entry",

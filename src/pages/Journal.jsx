@@ -2,12 +2,21 @@ import { useContext, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { HiOutlinePlus, HiOutlineBookOpen } from "react-icons/hi";
 
-import JournalCalendar from "../components/layout/JournalCalendar";
-
+import { toast } from "react-toastify";
 import { ThemeContext, themeStyles } from "../context/ThemeContext";
-import { getEntriesByDateAPI } from "../services/entryService";
+
+import JournalCalendar from "../components/layout/JournalCalendar";
 import DashboardNavbar from "../components/layout/DashboardNavbar";
 import EntryCard from "../components/layout/EntryCard";
+import EntryModal from "../components/layout/EntryModal";
+
+import {
+  createEntryAPI,
+  updateEntryAPI,
+  deleteEntryAPI,
+  getEntriesByDateAPI,
+  getEntriesAPI,
+} from "../services/entryService";
 
 function Journal() {
   const { theme } = useContext(ThemeContext);
@@ -22,9 +31,15 @@ function Journal() {
 
   const [selectedEntry, setSelectedEntry] = useState(null);
 
+  const [entryDates, setEntryDates] = useState([]);
+
   useEffect(() => {
     loadEntries();
   }, [selectedDate]);
+
+  useEffect(() => {
+    loadEntryDates();
+  }, []);
 
   const loadEntries = async () => {
     try {
@@ -40,6 +55,20 @@ function Journal() {
     }
   };
 
+  const loadEntryDates = async () => {
+    try {
+      const response = await getEntriesAPI();
+
+      const dates = response.data.map((entry) =>
+        formatDate(new Date(entry.date)),
+      );
+
+      setEntryDates([...new Set(dates)]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleCreateEntry = () => {
     setSelectedEntry(null);
     setShowEditor(true);
@@ -48,6 +77,71 @@ function Journal() {
   const handleEditEntry = (entry) => {
     setSelectedEntry(entry);
     setShowEditor(true);
+  };
+
+  const handleSaveEntry = async (formData) => {
+    if (!formData.title.trim()) {
+      toast.error("Title is required");
+      return;
+    }
+
+    if (!formData.content.trim()) {
+      toast.error("Content is required");
+      return;
+    }
+
+    if (!formData.date) {
+      toast.error("Date is required");
+      return;
+    }
+
+    if (!formData.time) {
+      toast.error("Time is required");
+      return;
+    }
+
+    try {
+      if (selectedEntry) {
+        await updateEntryAPI(selectedEntry._id, formData);
+
+        toast.success("Memory updated");
+      } else {
+        await createEntryAPI({
+          ...formData,
+          date: formatDate(selectedDate),
+        });
+
+        toast.success("Memory saved");
+      }
+
+      await loadEntries();
+      await loadEntryDates();
+
+      setShowEditor(false);
+      setSelectedEntry(null);
+    } catch (error) {
+      console.log(error);
+
+      toast.error(`Something went wrong: ${error.message}`);
+    }
+  };
+
+  const handleDeleteEntry = async (entry) => {
+    try {
+      await deleteEntryAPI(entry._id);
+
+      toast.success("Memory deleted");
+
+      await loadEntries();
+      await loadEntryDates();
+
+      setShowEditor(false);
+      setSelectedEntry(null);
+    } catch (error) {
+      console.log(error);
+
+      toast.error(`Something went wrong: ${error.message}`);
+    }
   };
 
   const formatDate = (date) => {
@@ -112,6 +206,7 @@ function Journal() {
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
                   formatDate={formatDate}
+                  entryDates={entryDates}
                 />
               </div>
             </motion.div>
@@ -214,7 +309,16 @@ function Journal() {
           </div>
 
           {/* editor modal */}
-          {showEditor && <div className="hidden">Editor Modal Placeholder</div>}
+          {showEditor && (
+            <EntryModal
+              isOpen={showEditor}
+              entry={selectedEntry}
+              selectedDate={selectedDate}
+              onClose={() => setShowEditor(false)}
+              onSave={handleSaveEntry}
+              onDelete={handleDeleteEntry}
+            />
+          )}
         </div>
       </motion.main>
     </>

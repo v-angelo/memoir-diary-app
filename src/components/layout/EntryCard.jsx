@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { moodMap } from "../../utilities/journalUtils";
+import { moodMap, formatTime } from "../../utilities/journalUtils";
 
 function EntryCard({ entry, index, onClick }) {
   return (
@@ -27,26 +27,27 @@ function EntryCard({ entry, index, onClick }) {
     >
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-lg font-semibold">{entry.title}</h3>
+          <h3 className="text-lg font-semibold">{entry?.title}</h3>
 
-          {entry.mood && (
+          {entry?.mood && (
             <span className="rounded-full bg-(--accent) px-2 py-1 text-xs text-white">
               {moodMap[entry.mood]}{" "}
-              {entry.mood.charAt(0).toUpperCase() + entry.mood.slice(1)}
+              {entry.mood.charAt(0).toUpperCase() + entry?.mood.slice(1)}
             </span>
           )}
         </div>
 
         <span className="text-sm text-(--text-secondary)">
-          {new Date(entry.createdAt).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          {formatTime(entry?.time) ||
+            new Date(entry.createdAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
         </span>
       </div>
 
       <p className="mt-3 line-clamp-5 text-(--text-secondary) lg:line-clamp-3">
-        {entry.content}
+        {entry?.content}
       </p>
     </motion.div>
   );
