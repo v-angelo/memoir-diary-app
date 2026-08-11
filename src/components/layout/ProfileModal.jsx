@@ -6,6 +6,8 @@ import { ThemeContext, themeStyles } from "../../context/ThemeContext";
 import { getInitials } from "../../utilities/journalUtils";
 import { profileSchema } from "../../validation/profileSchema";
 
+import { HiOutlineTrash } from "react-icons/hi2";
+
 function ProfileModal({ isOpen, user, onClose, onSave }) {
   const { theme } = useContext(ThemeContext);
 
@@ -30,6 +32,7 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
         ? ""
         : user?.profilePic || "",
       imageFile: null,
+      removeProfilePic: false,
     },
 
     validationSchema: profileSchema,
@@ -105,8 +108,8 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
               {/* avatar preview */}
               <div className="mb-6 flex justify-center">
                 <div
-                  onClick={() => fileInputRef.current?.click()}
                   className="group relative cursor-pointer"
+                  onClick={() => fileInputRef.current?.click()}
                 >
                   {previewImage ? (
                     <img
@@ -125,6 +128,29 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
                       Change
                     </span>
                   </div>
+
+                  {/* delete button */}
+                  {previewImage && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+
+                        setPreviewImage("");
+
+                        formik.setFieldValue("imageFile", null);
+                        formik.setFieldValue("profilePic", "");
+                        formik.setFieldValue("removeProfilePic", true);
+
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = "";
+                        }
+                      }}
+                      className="absolute -right-2 -bottom-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white shadow-lg transition hover:scale-110"
+                    >
+                      <HiOutlineTrash />
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -144,6 +170,7 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
                   setPreviewImage(imageUrl);
 
                   formik.setFieldValue("imageFile", file);
+                  formik.setFieldValue("removeProfilePic", false);
                 }}
               />
 
