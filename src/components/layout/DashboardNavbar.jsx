@@ -1,6 +1,6 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 
 import ThemeSelector from "./ThemeSelector";
 import { ThemeContext, themeStyles } from "../../context/ThemeContext";
@@ -13,6 +13,8 @@ import {
   HiChevronDown,
 } from "react-icons/hi2";
 
+import { HiOutlineMenu, HiX } from "react-icons/hi";
+
 function DashboardNavbar() {
   const { theme } = useContext(ThemeContext);
   const { user, logout } = useContext(AuthContext);
@@ -22,6 +24,8 @@ function DashboardNavbar() {
 
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -36,6 +40,10 @@ function DashboardNavbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   return (
     <motion.header
@@ -77,7 +85,7 @@ function DashboardNavbar() {
         </div>
 
         {/* right side */}
-        <div className="flex items-center gap-4">
+        <div className="hidden items-center gap-4 md:flex">
           <ThemeSelector />
 
           <div ref={menuRef} className="relative">
@@ -89,7 +97,7 @@ function DashboardNavbar() {
                 <img
                   src={user.profilePic}
                   alt={user.username}
-                  className="h-10 w-10 rounded-full object-cover"
+                  className="h-10 w-10 rounded-full object-cover ring-2 ring-(--accent)"
                 />
               ) : (
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-(--accent) font-semibold text-white">
@@ -104,42 +112,128 @@ function DashboardNavbar() {
               <HiChevronDown />
             </button>
 
-            {showMenu && (
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: -10,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                className="absolute right-0 mt-3 w-52 overflow-hidden rounded-2xl border border-white/10 bg-(--bg-secondary) shadow-xl"
-              >
-                <Link
-                  to="/profile"
-                  onClick={() => setShowMenu(false)}
-                  className="flex items-center gap-3 px-4 py-3 transition hover:bg-(--bg-primary)"
-                >
-                  <HiOutlineUser />
-                  Profile
-                </Link>
-
-                <button
-                  onClick={() => {
-                    setShowMenu(false);
-                    logout();
+            <AnimatePresence>
+              {showMenu && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: -10,
                   }}
-                  className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition hover:bg-(--bg-primary)"
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  className="absolute right-0 mt-3 w-52 overflow-hidden rounded-2xl border border-white/10 bg-(--bg-secondary) shadow-xl"
                 >
-                  <HiOutlineArrowRightOnRectangle />
-                  Logout
-                </button>
-              </motion.div>
-            )}
+                  <Link
+                    to="/profile"
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 px-4 py-3 transition hover:bg-(--bg-primary)"
+                  >
+                    <HiOutlineUser />
+                    Profile
+                  </Link>
+
+                  <button
+                    onClick={() => {
+                      setShowMenu(false);
+                      logout();
+                    }}
+                    className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition hover:bg-(--bg-primary)"
+                  >
+                    <HiOutlineArrowRightOnRectangle />
+                    Logout
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
+
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="text-3xl md:hidden"
+        >
+          {menuOpen ? <HiX /> : <HiOutlineMenu />}
+        </button>
       </nav>
+
+      {/* mobile menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="border-t border-white/10 bg-(--bg-secondary) md:hidden"
+          >
+            <div className="flex flex-col gap-4 px-6 py-5">
+              <div className="mb-2 flex items-center gap-3">
+                {user?.profilePic ? (
+                  <img
+                    src={user.profilePic}
+                    alt={user.username}
+                    className="h-12 w-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-(--accent) font-semibold text-white">
+                    {getInitials(user?.username)}
+                  </div>
+                )}
+
+                <div>
+                  <p className="font-medium">{user?.username}</p>
+                  <p className="text-sm text-(--text-secondary)">
+                    {user?.email}
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                to="/dashboard"
+                onClick={() => setMenuOpen(false)}
+                className={
+                  location.pathname === "/dashboard" ? "text-(--accent)" : ""
+                }
+              >
+                Dashboard
+              </Link>
+
+              <Link
+                to="/journal"
+                onClick={() => setMenuOpen(false)}
+                className={
+                  location.pathname === "/journal" ? "text-(--accent)" : ""
+                }
+              >
+                Journal
+              </Link>
+
+              <Link
+                to="/profile"
+                onClick={() => setMenuOpen(false)}
+                className={
+                  location.pathname === "/profile" ? "text-(--accent)" : ""
+                }
+              >
+                Profile
+              </Link>
+
+              <ThemeSelector />
+
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  logout();
+                }}
+                className="rounded-xl border border-(--accent) px-5 py-3 text-(--accent)"
+              >
+                Logout
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

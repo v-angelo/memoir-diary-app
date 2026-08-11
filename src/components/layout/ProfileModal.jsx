@@ -17,7 +17,7 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
 
   useEffect(() => {
     setPreviewImage(user?.profilePic || "");
-  }, [user]);
+  }, [user, isOpen]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -26,7 +26,9 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
       username: user?.username || "",
       email: user?.email || "",
       password: "",
-      profilePic: user?.profilePic || "",
+      imageUrl: user?.profilePic?.includes("/files/")
+        ? ""
+        : user?.profilePic || "",
       imageFile: null,
     },
 
@@ -37,6 +39,18 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
     },
   });
 
+  const handleClose = () => {
+    formik.resetForm();
+
+    setPreviewImage(user?.profilePic || "");
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+
+    onClose();
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -46,7 +60,7 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
             className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
           />
 
@@ -81,7 +95,7 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
                 <h2 className="text-2xl font-bold">Edit Profile</h2>
 
                 <button
-                  onClick={onClose}
+                  onClick={handleClose}
                   className="cursor-pointer text-2xl text-(--text-secondary)"
                 >
                   ×
@@ -137,8 +151,8 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
                 {/* image url */}
                 <input
                   type="text"
-                  name="profilePic"
-                  value={formik.values.profilePic}
+                  name="imageUrl"
+                  value={formik.values.imageUrl}
                   onChange={(e) => {
                     formik.handleChange(e);
                     setPreviewImage(e.target.value);
@@ -202,7 +216,7 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
                 <div className="mt-6 flex justify-end gap-3">
                   <button
                     type="button"
-                    onClick={onClose}
+                    onClick={handleClose}
                     className="cursor-pointer rounded-xl border border-(--accent) px-5 py-3 text-(--accent)"
                   >
                     Cancel

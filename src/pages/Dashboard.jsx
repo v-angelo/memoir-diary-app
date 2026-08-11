@@ -123,11 +123,21 @@ function Dashboard() {
             <div className="rounded-3xl bg-(--bg-secondary) p-6">
               <h3 className="text-(--text-secondary)">Favorite Mood</h3>
 
-              <p className="mt-3 text-4xl font-bold">
-                {stats.mostCommonMood
-                  ? `${moodMap[stats.mostCommonMood]}`
-                  : "—"}
-              </p>
+              <div className="mt-3 flex items-center gap-3">
+                {stats.mostCommonMood ? (
+                  <>
+                    <span className="text-4xl">
+                      {moodMap[stats.mostCommonMood]}
+                    </span>
+
+                    <span className="text-2xl font-bold capitalize">
+                      {stats.mostCommonMood}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-4xl font-bold">—</span>
+                )}
+              </div>
             </div>
 
             <div className="rounded-3xl bg-(--bg-secondary) p-6">
@@ -231,9 +241,17 @@ function Dashboard() {
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold">{entry.title}</h3>
 
-                      <span className="text-sm text-(--text-secondary)">
-                        {formatTime(entry.time)}
-                      </span>
+                      <div className="text-right text-sm text-(--text-secondary)">
+                        <p>
+                          {new Date(entry.date).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </p>
+
+                        <p>{formatTime(entry.time)}</p>
+                      </div>
                     </div>
 
                     <p className="mt-2 line-clamp-2 text-(--text-secondary)">

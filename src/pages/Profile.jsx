@@ -36,8 +36,8 @@ function Profile() {
       }
 
       // image URL fallback
-      else if (formData.profilePic?.trim()) {
-        reqBody.append("profilePic", formData.profilePic);
+      else if (formData.imageUrl?.trim()) {
+        reqBody.append("profilePic", formData.imageUrl);
       }
 
       const response = await updateUserAPI(user._id, reqBody);
