@@ -7,6 +7,7 @@ import { getInitials } from "../../utilities/journalUtils";
 import { profileSchema } from "../../validation/profileSchema";
 
 import { HiOutlineTrash } from "react-icons/hi2";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 function ProfileModal({ isOpen, user, onClose, onSave }) {
   const { theme } = useContext(ThemeContext);
@@ -16,6 +17,9 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
   const fileInputRef = useRef(null);
 
   const [previewImage, setPreviewImage] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     setPreviewImage(user?.profilePic || "");
@@ -28,6 +32,7 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
       username: user?.username || "",
       email: user?.email || "",
       password: "",
+      confirmPassword: "",
       imageUrl: user?.profilePic?.includes("/files/")
         ? ""
         : user?.profilePic || "",
@@ -44,6 +49,9 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
 
   const handleClose = () => {
     formik.resetForm();
+
+    setShowPassword(false);
+    setShowConfirmPassword(false);
 
     setPreviewImage(user?.profilePic || "");
 
@@ -223,21 +231,63 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
                 )}
 
                 {/* password */}
-                <input
-                  type="password"
-                  name="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  placeholder="New password (optional)"
-                  className="mb-2 w-full rounded-xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
-                />
+                <div className="relative mb-2">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="New password (optional)"
+                    className="w-full rounded-xl border border-white/10 bg-(--bg-primary) px-4 py-3 pr-12 outline-none"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute top-1/2 right-4 -translate-y-1/2 text-xl text-(--text-secondary)"
+                  >
+                    {showPassword ? <HiEyeOff /> : <HiEye />}
+                  </button>
+                </div>
 
                 {formik.touched.password && formik.errors.password && (
                   <p className="mb-4 ml-2 text-sm text-red-500">
                     {formik.errors.password}
                   </p>
                 )}
+
+                {/* confirm password */}
+                {formik.values.password && (
+                  <div className="relative mb-2">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formik.values.confirmPassword}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      placeholder="Confirm new password"
+                      className="w-full rounded-xl border border-white/10 bg-(--bg-primary) px-4 py-3 pr-12 outline-none"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute top-1/2 right-4 -translate-y-1/2 text-xl text-(--text-secondary)"
+                    >
+                      {showConfirmPassword ? <HiEyeOff /> : <HiEye />}
+                    </button>
+                  </div>
+                )}
+
+                {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword && (
+                    <p className="mb-4 ml-2 text-sm text-red-500">
+                      {formik.errors.confirmPassword}
+                    </p>
+                  )}
 
                 {/* footer */}
                 <div className="mt-6 flex justify-end gap-3">

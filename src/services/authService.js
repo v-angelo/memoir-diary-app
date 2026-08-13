@@ -18,3 +18,7 @@ export const logoutAPI = () => {
 // update user details
 export const updateUserAPI = (userId, reqBody) =>
   apiService("PUT", `/user/${userId}`, reqBody);
+
+// google login
+export const googleLoginAPI = (reqBody) =>
+  apiService("POST", "/google-login", reqBody);

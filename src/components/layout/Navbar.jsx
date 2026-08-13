@@ -15,6 +15,7 @@ import ThemeSelector from "./ThemeSelector";
 import { ThemeContext, themeStyles } from "../../context/ThemeContext";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -126,7 +127,16 @@ function Navbar() {
                     {user?.username}
                   </span>
 
-                  <HiChevronDown />
+                  <motion.div
+                    animate={{
+                      rotate: showProfileMenu ? 180 : 0,
+                    }}
+                    transition={{
+                      duration: 0.2,
+                    }}
+                  >
+                    <HiChevronDown />
+                  </motion.div>
                 </button>
 
                 <AnimatePresence>
@@ -155,7 +165,7 @@ function Navbar() {
                         onClick={() => setShowProfileMenu(false)}
                         className="flex items-center gap-3 px-4 py-3 transition hover:bg-(--bg-primary)"
                       >
-                        <HiOutlineUser />
+                        <HiOutlineUser className="text-lg" />
                         Profile
                       </Link>
 
@@ -166,7 +176,8 @@ function Navbar() {
                         }}
                         className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition hover:bg-(--bg-primary)"
                       >
-                        🚪 Logout
+                        <HiOutlineArrowRightOnRectangle className="text-lg" />
+                        Logout
                       </button>
                     </motion.div>
                   )}

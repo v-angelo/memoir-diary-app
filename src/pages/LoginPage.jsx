@@ -16,8 +16,10 @@ import { loginSchema } from "../validation/loginSchema";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { loginAPI } from "../services/authService";
+import { googleLoginAPI, loginAPI } from "../services/authService";
 import { AuthContext } from "../context/AuthContext";
+
+import { GoogleLogin } from "@react-oauth/google";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -40,10 +42,10 @@ function LoginPage() {
       try {
         const response = await loginAPI(values);
 
-        toast.success(response.message);
-
         // save user data
         login(response.data.user, response.data.token);
+
+        toast.success(response.message);
 
         setTimeout(() => {
           navigate("/dashboard");
@@ -53,6 +55,25 @@ function LoginPage() {
       }
     },
   });
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const response = await googleLoginAPI({
+        credential: credentialResponse.credential,
+      });
+
+      // save user data
+      login(response.data.user, response.data.token);
+
+      toast.success("Welcome to Memoir!");
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1500);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Google login failed!");
+    }
+  };
 
   return (
     <motion.div
@@ -134,14 +155,33 @@ function LoginPage() {
                 />
 
                 <AuthButton type="submit">Login</AuthButton>
-              </form>
 
-              <p className="mt-6 text-center text-(--text-secondary)">
-                Don&apos;t have an account?{" "}
-                <Link to="/register" className="font-medium text-(--accent)">
-                  Create Account
-                </Link>
-              </p>
+                <div className="mt-1 flex items-center">
+                  <div className="h-px flex-1 bg-(--text-secondary)/25"></div>
+
+                  <span className="px-3 text-sm text-(--text-secondary)">
+                    OR
+                  </span>
+
+                  <div className="h-px flex-1 bg-(--text-secondary)/25"></div>
+                </div>
+
+                <div className="flex justify-center">
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => {
+                      console.log("Google Login Failed!");
+                    }}
+                  />
+                </div>
+
+                <p className="mt-6 text-center text-(--text-secondary)">
+                  Don&apos;t have an account?{" "}
+                  <Link to="/register" className="font-medium text-(--accent)">
+                    Create Account
+                  </Link>
+                </p>
+              </form>
             </AuthCard>
           </motion.div>
         </div>

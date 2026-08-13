@@ -109,7 +109,16 @@ function DashboardNavbar() {
                 {user?.username}
               </span>
 
-              <HiChevronDown />
+              <motion.div
+                animate={{
+                  rotate: showMenu ? 180 : 0,
+                }}
+                transition={{
+                  duration: 0.2,
+                }}
+              >
+                <HiChevronDown />
+              </motion.div>
             </button>
 
             <AnimatePresence>
@@ -123,17 +132,35 @@ function DashboardNavbar() {
                     opacity: 1,
                     y: 0,
                   }}
-                  className="absolute right-0 mt-3 w-52 overflow-hidden rounded-2xl border border-white/10 bg-(--bg-secondary) shadow-xl"
+                  exit={{
+                    opacity: 0,
+                    y: -10,
+                  }}
+                  transition={{
+                    duration: 0.2,
+                  }}
+                  className="absolute right-0 mt-3 w-56 overflow-hidden rounded-2xl border border-white/10 bg-(--bg-secondary) shadow-xl"
                 >
+                  {/* user info */}
+                  <div className="border-b border-white/10 px-4 py-3">
+                    <p className="font-medium">{user?.username}</p>
+
+                    <p className="truncate text-sm text-(--text-secondary)">
+                      {user?.email}
+                    </p>
+                  </div>
+
+                  {/* profile */}
                   <Link
                     to="/profile"
                     onClick={() => setShowMenu(false)}
                     className="flex items-center gap-3 px-4 py-3 transition hover:bg-(--bg-primary)"
                   >
-                    <HiOutlineUser />
+                    <HiOutlineUser className="text-lg" />
                     Profile
                   </Link>
 
+                  {/* logout */}
                   <button
                     onClick={() => {
                       setShowMenu(false);
@@ -141,7 +168,7 @@ function DashboardNavbar() {
                     }}
                     className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left transition hover:bg-(--bg-primary)"
                   >
-                    <HiOutlineArrowRightOnRectangle />
+                    <HiOutlineArrowRightOnRectangle className="text-lg" />
                     Logout
                   </button>
                 </motion.div>

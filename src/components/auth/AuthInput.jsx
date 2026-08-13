@@ -26,12 +26,10 @@ function AuthInput({
 
   return (
     <div className="space-y-2">
-      {/* LABEL */}
-
+      {/* label */}
       <label className="text-sm text-(--text-secondary)">{label}</label>
 
-      {/* INPUT + ICON CONTAINER */}
-
+      {/* input and icon container */}
       <div className="relative">
         <motion.input
           type={isPassword ? (showPassword ? "text" : "password") : type}
@@ -51,8 +49,7 @@ function AuthInput({
           className="w-full rounded-2xl border border-white/10 px-4 py-3 pr-12 outline-none placeholder:text-(--text-secondary) focus:border-(--accent)"
         />
 
-        {/* PASSWORD TOGGLE */}
-
+        {/* password toggle */}
         {isPassword && (
           <button
             type="button"
@@ -64,8 +61,7 @@ function AuthInput({
         )}
       </div>
 
-      {/* ERROR MESSAGE */}
-
+      {/* error message */}
       {touched && error && <p className="ms-2 text-sm text-red-400">{error}</p>}
     </div>
   );
