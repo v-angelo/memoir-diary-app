@@ -1,6 +1,8 @@
 import { DayPicker } from "react-day-picker";
 import { motion } from "motion/react";
 
+import { useEffect, useState } from "react";
+
 import "react-day-picker/dist/style.css";
 
 function JournalCalendar({
@@ -10,6 +12,12 @@ function JournalCalendar({
   entryDates,
   className = "",
 }) {
+  const [month, setMonth] = useState(selectedDate);
+
+  useEffect(() => {
+    setMonth(selectedDate);
+  }, [selectedDate]);
+
   return (
     <motion.div
       initial={{
@@ -28,6 +36,8 @@ function JournalCalendar({
       <DayPicker
         mode="single"
         selected={selectedDate}
+        month={month}
+        onMonthChange={setMonth}
         onSelect={(date) => date && setSelectedDate(date)}
         modifiers={{
           hasEntry: (date) => entryDates?.includes(formatDate(date)),

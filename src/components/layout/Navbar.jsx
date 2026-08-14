@@ -73,9 +73,9 @@ function Navbar() {
         duration: 0.4,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md"
+      className="sticky top-0 z-50 border-b border-(--text-secondary)/10 backdrop-blur-md"
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
         {/* logo */}
         <Link to="/" className="text-3xl font-bold tracking-tight">
           Memoir

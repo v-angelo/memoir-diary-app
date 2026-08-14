@@ -17,6 +17,7 @@ import {
   getEntriesByDateAPI,
   getEntriesAPI,
 } from "../services/entryService";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Journal() {
   const { theme } = useContext(ThemeContext);
@@ -32,6 +33,25 @@ function Journal() {
   const [selectedEntry, setSelectedEntry] = useState(null);
 
   const [entryDates, setEntryDates] = useState([]);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!location.state?.entry) return;
+
+    const entryDate = new Date(location.state.entry.date);
+
+    setSelectedDate(entryDate);
+
+    setSelectedEntry(location.state.entry);
+    setShowEditor(true);
+
+    navigate(location.pathname, {
+      replace: true,
+      state: {},
+    });
+  }, []);
 
   useEffect(() => {
     loadEntries();
@@ -112,6 +132,10 @@ function Journal() {
     try {
       if (selectedEntry) {
         await updateEntryAPI(selectedEntry._id, formData);
+
+        if (formData.date !== formatDate(selectedDate)) {
+          setSelectedDate(new Date(formData.date));
+        }
 
         toast.success("Memory updated");
       } else {

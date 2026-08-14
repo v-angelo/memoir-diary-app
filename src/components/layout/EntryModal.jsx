@@ -90,19 +90,23 @@ function EntryModal({
               className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded-3xl p-6 shadow-2xl"
             >
               {/* header */}
-              <div className="mb-6 flex items-center justify-between">
+              <div
+                className={`${isEditing ? "mb-6" : "mb-0"} flex items-center justify-between`}
+              >
                 <div>
-                  <h2 className="text-2xl font-bold">
-                    {!entry
-                      ? "New Memory"
-                      : isEditing
-                        ? "Edit Memory"
-                        : "Memory Details"}
-                  </h2>
+                  <div>
+                    {isEditing && (
+                      <>
+                        <h2 className="text-2xl font-bold">
+                          {entry ? "Edit Memory" : "New Memory"}
+                        </h2>
 
-                  <p className="text-(--text-secondary)">
-                    Capture moments worth remembering.
-                  </p>
+                        <p className="text-(--text-secondary)">
+                          Capture moments worth remembering.
+                        </p>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <button
@@ -127,77 +131,110 @@ function EntryModal({
                     )}
 
                     <span className="rounded-full bg-(--bg-primary) px-3 py-1 text-sm text-(--text-secondary)">
+                      📅{" "}
+                      {new Date(formData.date).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+
+                    <span className="rounded-full bg-(--bg-primary) px-3 py-1 text-sm text-(--text-secondary)">
                       🕒 {formatTime(formData.time)}
                     </span>
                   </div>
                 )}
 
                 {/* title */}
-                <input
-                  type="text"
-                  disabled={!isEditing}
-                  value={formData.title}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      title: e.target.value,
-                    })
-                  }
-                  placeholder="Entry title..."
-                  className="mb-4 w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
-                />
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        title: e.target.value,
+                      })
+                    }
+                    placeholder="Entry title..."
+                    className="mb-4 w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                  />
+                ) : (
+                  <h1 className="mb-4 text-3xl font-bold tracking-tight">
+                    {formData.title}
+                  </h1>
+                )}
 
                 {/* mood + time row */}
-                <div className="mb-4 grid gap-4 sm:grid-cols-2">
-                  <select
-                    disabled={!isEditing}
-                    value={formData.mood}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        mood: e.target.value,
-                      })
-                    }
-                    className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
-                  >
-                    <option value="">Select Mood</option>
-                    <option value="happy">😊 Happy</option>
-                    <option value="excited">🤩 Excited</option>
-                    <option value="calm">😌 Calm</option>
-                    <option value="productive">💪 Productive</option>
-                    <option value="sad">😔 Sad</option>
-                    <option value="angry">😠 Angry</option>
-                    <option value="anxious">😰 Anxious</option>
-                  </select>
+                {isEditing ? (
+                  <div className="mb-4 grid gap-4 md:grid-cols-3">
+                    <select
+                      value={formData.mood}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          mood: e.target.value,
+                        })
+                      }
+                      className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                    >
+                      <option value="">Select Mood</option>
+                      <option value="happy">😊 Happy</option>
+                      <option value="excited">🤩 Excited</option>
+                      <option value="calm">😌 Calm</option>
+                      <option value="productive">💪 Productive</option>
+                      <option value="sad">😔 Sad</option>
+                      <option value="angry">😠 Angry</option>
+                      <option value="anxious">😰 Anxious</option>
+                    </select>
 
-                  <input
-                    type="time"
-                    disabled={!isEditing}
-                    value={formData.time}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        time: e.target.value,
-                      })
-                    }
-                    className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
-                  />
-                </div>
+                    <input
+                      type="date"
+                      value={formData.date}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          date: e.target.value,
+                        })
+                      }
+                      className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                    />
+
+                    <input
+                      type="time"
+                      value={formData.time}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          time: e.target.value,
+                        })
+                      }
+                      className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                    />
+                  </div>
+                ) : null}
 
                 {/* content */}
-                <textarea
-                  rows={12}
-                  disabled={!isEditing}
-                  value={formData.content}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      content: e.target.value,
-                    })
-                  }
-                  placeholder="What's on your mind today?"
-                  className="w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none disabled:cursor-default disabled:opacity-80"
-                />
+                {isEditing ? (
+                  <textarea
+                    rows={12}
+                    value={formData.content}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        content: e.target.value,
+                      })
+                    }
+                    placeholder="What's on your mind today?"
+                    className="w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                  />
+                ) : (
+                  <div className="prose prose-invert max-w-none">
+                    <p className="leading-8 whitespace-pre-wrap text-(--text-primary)">
+                      {formData.content}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* footer */}

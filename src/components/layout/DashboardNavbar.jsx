@@ -55,7 +55,7 @@ function DashboardNavbar() {
         duration: 0.4,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md"
+      className="sticky top-0 z-50 border-b border-(--text-secondary)/10 backdrop-blur-md"
     >
       <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
         {/* logo */}
@@ -97,7 +97,7 @@ function DashboardNavbar() {
                 <img
                   src={user.profilePic}
                   alt={user.username}
-                  className="h-10 w-10 rounded-full object-cover ring-2 ring-(--accent)"
+                  className="h-10 w-10 rounded-full object-cover"
                 />
               ) : (
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-(--accent) font-semibold text-white">

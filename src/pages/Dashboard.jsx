@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
-import { motion } from "motion/react";
-import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "motion/react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthContext";
 import { ThemeContext, themeStyles } from "../context/ThemeContext";
@@ -12,6 +12,7 @@ import { getEntriesAPI } from "../services/entryService";
 
 import { calculateStreaks } from "../utilities/streakUtils";
 import { moodMap, formatTime } from "../utilities/journalUtils";
+import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -26,6 +27,10 @@ function Dashboard() {
     longestStreak: 0,
     mostCommonMood: null,
   });
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadDashboardData();
@@ -62,9 +67,17 @@ function Dashboard() {
     }
   };
 
-  const recentEntries = [...entries]
-    .sort((a, b) => new Date(b.entryDateTime) - new Date(a.entryDateTime))
-    .slice(0, 5);
+  const sortedEntries = [...entries].sort(
+    (a, b) => new Date(b.entryDateTime) - new Date(a.entryDateTime),
+  );
+
+  const filteredEntries = sortedEntries.filter((entry) =>
+    entry.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const displayedEntries = searchTerm.trim()
+    ? filteredEntries
+    : sortedEntries.slice(0, 5);
 
   return (
     <>
@@ -157,7 +170,7 @@ function Dashboard() {
             </div>
           </motion.div>
 
-          {/* new entry cta */}
+          {/* new entry link */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -180,23 +193,51 @@ function Dashboard() {
             transition={{ delay: 0.35 }}
             className="mt-16"
           >
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              {/* left side */}
               <div>
-                <h2 className="text-3xl font-bold">Recent Entries</h2>
+                <h2 className="text-3xl font-bold">
+                  {searchTerm.trim() ? "Search Results" : "Recent Entries"}
+                </h2>
 
                 <p className="mt-2 text-(--text-secondary)">
-                  Revisit your latest memories and reflections.
+                  {searchTerm.trim()
+                    ? `Showing entries matching "${searchTerm}"`
+                    : "Revisit your latest memories and reflections."}
                 </p>
               </div>
 
-              {entries.length > 0 && (
-                <span className="self-start rounded-xl bg-(--accent) px-4 py-2 text-sm font-semibold text-white sm:self-auto">
-                  {recentEntries.length} entries
-                </span>
-              )}
+              {/* right side */}
+              <div className="flex items-center justify-center gap-2">
+                <div className="relative">
+                  <HiOutlineMagnifyingGlass className="absolute top-1/2 left-4 -translate-y-1/2 text-lg text-(--text-secondary)" />
+
+                  <input
+                    type="text"
+                    placeholder="Search entries..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full rounded-2xl border border-white/10 bg-(--bg-secondary) py-3 pr-5 pl-12 outline-none"
+                  />
+                </div>
+
+                {entries.length > 0 && (
+                  <div className="h-full min-w-25">
+                    <motion.span
+                      key={displayedEntries.length}
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="rounded-xl bg-(--accent) px-4 py-3 text-sm font-semibold text-white"
+                    >
+                      {displayedEntries.length}{" "}
+                      {displayedEntries.length === 1 ? "entry" : "entries"}
+                    </motion.span>
+                  </div>
+                )}
+              </div>
             </div>
 
-            {recentEntries.length === 0 ? (
+            {entries.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -220,46 +261,70 @@ function Dashboard() {
                   Write First Entry
                 </Link>
               </motion.div>
+            ) : displayedEntries.length === 0 ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mt-6 rounded-3xl bg-(--bg-secondary) p-12 text-center"
+              >
+                <h3 className="text-2xl font-bold">
+                  No matching entries found
+                </h3>
+
+                <p className="mt-3 text-(--text-secondary)">
+                  Try a different title or keyword.
+                </p>
+              </motion.div>
             ) : (
-              <div className="mt-6 space-y-4">
-                {recentEntries.map((entry, index) => (
-                  <motion.div
-                    key={entry._id}
-                    initial={{
-                      opacity: 0,
-                      y: 15,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    transition={{
-                      delay: 0.45 + index * 0.05,
-                    }}
-                    className="rounded-2xl bg-(--bg-secondary) p-5"
-                  >
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold">{entry.title}</h3>
+              <AnimatePresence>
+                <div className="mt-6 space-y-4">
+                  {displayedEntries.map((entry, index) => (
+                    <motion.div
+                      key={entry._id}
+                      initial={{
+                        opacity: 0,
+                        y: 15,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      transition={{
+                        delay: 0.45 + index * 0.05,
+                      }}
+                      onClick={() =>
+                        navigate("/journal", {
+                          state: {
+                            entryId: entry._id,
+                            entry,
+                          },
+                        })
+                      }
+                      className="cursor-pointer rounded-2xl bg-(--bg-secondary) p-5 hover:ring hover:ring-(--accent)"
+                    >
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-semibold">{entry.title}</h3>
 
-                      <div className="text-right text-sm text-(--text-secondary)">
-                        <p>
-                          {new Date(entry.date).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </p>
+                        <div className="text-right text-sm text-(--text-secondary)">
+                          <p>
+                            {new Date(entry.date).toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </p>
 
-                        <p>{formatTime(entry.time)}</p>
+                          <p>{formatTime(entry.time)}</p>
+                        </div>
                       </div>
-                    </div>
 
-                    <p className="mt-2 line-clamp-2 text-(--text-secondary)">
-                      {entry.content}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
+                      <p className="mt-2 line-clamp-2 text-(--text-secondary)">
+                        {entry.content}
+                      </p>
+                    </motion.div>
+                  ))}
+                </div>
+              </AnimatePresence>
             )}
           </motion.section>
         </div>
