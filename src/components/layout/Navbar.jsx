@@ -33,6 +33,8 @@ function Navbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const profileMenuRef = useRef(null);
 
+  const isLandingPage = location.pathname === "/";
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -77,29 +79,47 @@ function Navbar() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
         {/* title */}
-        <a href="#hero" className="text-3xl font-bold tracking-tight">
-          Memoir
-        </a>
+        {isLandingPage ? (
+          <a href="#hero" className="text-3xl font-bold tracking-tight">
+            <div className="flex items-center justify-between gap-2">
+              <img className="h-12" src="/memoirLogo.png" alt="Logo" />
+              <span>Memoir</span>
+            </div>
+          </a>
+        ) : (
+          <Link to={"/"} className="text-3xl font-bold tracking-tight">
+            <div className="flex items-center justify-between gap-2">
+              <img className="h-12" src="/memoirLogo.png" alt="Logo" />
+              <span>Memoir</span>
+            </div>
+          </Link>
+        )}
 
         {/* desktop nav */}
         <div className="hidden items-center gap-8 md:flex">
-          <Link to="/#" className="transition-colors hover:text-(--accent)">
-            Home
-          </Link>
+          {isLandingPage ? null : (
+            <Link to="/" className="transition-colors hover:text-(--accent)">
+              Home
+            </Link>
+          )}
 
-          <a
-            href="#features"
-            className="transition-colors hover:text-(--accent)"
-          >
-            Features
-          </a>
+          {isLandingPage ? (
+            <>
+              <a
+                href="#features"
+                className="transition-colors hover:text-(--accent)"
+              >
+                Features
+              </a>
 
-          <a
-            href="#testimonials"
-            className="transition-colors hover:text-(--accent)"
-          >
-            Testimonials
-          </a>
+              <a
+                href="#testimonials"
+                className="transition-colors hover:text-(--accent)"
+              >
+                Testimonials
+              </a>
+            </>
+          ) : null}
 
           {isAuthenticated ? (
             <>

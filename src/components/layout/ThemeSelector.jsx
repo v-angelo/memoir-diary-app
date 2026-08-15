@@ -30,7 +30,7 @@ function ThemeSelector() {
     const isLocked = !isAuthenticated && !publicThemes.includes(selectedTheme);
 
     if (isLocked) {
-      toast.info("Register & Login to unlock all Memoir themes ✨");
+      toast.info("Login to unlock all Memoir themes ✨");
 
       return;
     }

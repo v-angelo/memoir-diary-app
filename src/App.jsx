@@ -17,6 +17,7 @@ import PublicRoute from "./components/auth/PublicRoute";
 import Journal from "./pages/Journal";
 import Profile from "./pages/Profile";
 import PnF from "./pages/PnF";
+import ScrollToTop from "./components/layout/ScrollToTop";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -36,6 +37,8 @@ function App() {
       className="min-h-screen"
     >
       <BrowserRouter>
+        <ScrollToTop />
+
         <Routes>
           <Route path="/" element={<LandingPage />} />
 

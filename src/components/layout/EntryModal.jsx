@@ -118,124 +118,144 @@ function EntryModal({
               </div>
 
               {/* body */}
-              <div className="flex-1 overflow-y-auto">
-                {/* metadata display */}
-                {entry && !isEditing && (
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {formData.mood && (
-                      <span className="rounded-full bg-(--accent) px-3 py-1 text-sm text-white">
-                        {moodMap[formData.mood]}{" "}
-                        {formData.mood.charAt(0).toUpperCase() +
-                          formData.mood.slice(1)}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isEditing ? "edit" : "view"}
+                  initial={{
+                    opacity: 0,
+                    y: 15,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: -15,
+                  }}
+                  transition={{
+                    duration: 0.2,
+                  }}
+                  className="flex-1 overflow-y-auto"
+                >
+                  {/* metadata display */}
+                  {entry && !isEditing && (
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      {formData.mood && (
+                        <span className="rounded-full bg-(--accent) px-3 py-1 text-sm text-white">
+                          {moodMap[formData.mood]}{" "}
+                          {formData.mood.charAt(0).toUpperCase() +
+                            formData.mood.slice(1)}
+                        </span>
+                      )}
+
+                      <span className="rounded-full bg-(--bg-primary) px-3 py-1 text-sm text-(--text-secondary)">
+                        📅{" "}
+                        {new Date(formData.date).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
                       </span>
-                    )}
 
-                    <span className="rounded-full bg-(--bg-primary) px-3 py-1 text-sm text-(--text-secondary)">
-                      📅{" "}
-                      {new Date(formData.date).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
+                      <span className="rounded-full bg-(--bg-primary) px-3 py-1 text-sm text-(--text-secondary)">
+                        🕒 {formatTime(formData.time)}
+                      </span>
+                    </div>
+                  )}
 
-                    <span className="rounded-full bg-(--bg-primary) px-3 py-1 text-sm text-(--text-secondary)">
-                      🕒 {formatTime(formData.time)}
-                    </span>
-                  </div>
-                )}
-
-                {/* title */}
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        title: e.target.value,
-                      })
-                    }
-                    placeholder="Entry title..."
-                    className="mb-4 w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
-                  />
-                ) : (
-                  <h1 className="mb-4 text-3xl font-bold tracking-tight">
-                    {formData.title}
-                  </h1>
-                )}
-
-                {/* mood + time row */}
-                {isEditing ? (
-                  <div className="mb-4 grid gap-4 md:grid-cols-3">
-                    <select
-                      value={formData.mood}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          mood: e.target.value,
-                        })
-                      }
-                      className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
-                    >
-                      <option value="">Select Mood</option>
-                      <option value="happy">😊 Happy</option>
-                      <option value="excited">🤩 Excited</option>
-                      <option value="calm">😌 Calm</option>
-                      <option value="productive">💪 Productive</option>
-                      <option value="sad">😔 Sad</option>
-                      <option value="angry">😠 Angry</option>
-                      <option value="anxious">😰 Anxious</option>
-                    </select>
-
+                  {/* title */}
+                  {isEditing ? (
                     <input
-                      type="date"
-                      value={formData.date}
+                      type="text"
+                      value={formData.title}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          date: e.target.value,
+                          title: e.target.value,
                         })
                       }
-                      className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                      placeholder="Entry title..."
+                      className="mb-4 w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
                     />
+                  ) : (
+                    <h1 className="mb-4 text-3xl font-bold tracking-tight">
+                      {formData.title}
+                    </h1>
+                  )}
 
-                    <input
-                      type="time"
-                      value={formData.time}
+                  {/* mood + time row */}
+                  {isEditing ? (
+                    <div className="mb-4 grid gap-4 md:grid-cols-3">
+                      <select
+                        value={formData.mood}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            mood: e.target.value,
+                          })
+                        }
+                        className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                      >
+                        <option value="">Select Mood</option>
+                        <option value="happy">😊 Happy</option>
+                        <option value="excited">🤩 Excited</option>
+                        <option value="calm">😌 Calm</option>
+                        <option value="productive">💪 Productive</option>
+                        <option value="sad">😔 Sad</option>
+                        <option value="angry">😠 Angry</option>
+                        <option value="anxious">😰 Anxious</option>
+                      </select>
+
+                      <input
+                        type="date"
+                        value={formData.date}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            date: e.target.value,
+                          })
+                        }
+                        className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                      />
+
+                      <input
+                        type="time"
+                        value={formData.time}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            time: e.target.value,
+                          })
+                        }
+                        className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                      />
+                    </div>
+                  ) : null}
+
+                  {/* content */}
+                  {isEditing ? (
+                    <textarea
+                      rows={12}
+                      value={formData.content}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          time: e.target.value,
+                          content: e.target.value,
                         })
                       }
-                      className="rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                      placeholder="What's on your mind today?"
+                      className="w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
                     />
-                  </div>
-                ) : null}
-
-                {/* content */}
-                {isEditing ? (
-                  <textarea
-                    rows={12}
-                    value={formData.content}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        content: e.target.value,
-                      })
-                    }
-                    placeholder="What's on your mind today?"
-                    className="w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
-                  />
-                ) : (
-                  <div className="prose prose-invert max-w-none">
-                    <p className="leading-8 whitespace-pre-wrap text-(--text-primary)">
-                      {formData.content}
-                    </p>
-                  </div>
-                )}
-              </div>
+                  ) : (
+                    <div className="prose prose-invert max-w-none">
+                      <p className="leading-8 whitespace-pre-wrap text-(--text-primary)">
+                        {formData.content}
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
 
               {/* footer */}
               <div className="mt-6 flex flex-wrap justify-end gap-3">

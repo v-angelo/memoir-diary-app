@@ -59,8 +59,11 @@ function DashboardNavbar() {
     >
       <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
         {/* logo */}
-        <Link to="/" className="text-3xl font-bold tracking-tight">
-          Memoir
+        <Link to={"/"} className="text-3xl font-bold tracking-tight">
+          <div className="flex items-center justify-between gap-2">
+            <img className="h-12" src="/memoirLogo.png" alt="Logo" />
+            <span>Memoir</span>
+          </div>
         </Link>
 
         {/* center nav */}
