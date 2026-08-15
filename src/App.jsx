@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 import Journal from "./pages/Journal";
 import Profile from "./pages/Profile";
+import PnF from "./pages/PnF";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -82,6 +83,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="*" element={<PnF />} />
         </Routes>
 
         <ToastContainer

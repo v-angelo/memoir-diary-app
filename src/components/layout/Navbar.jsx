@@ -76,14 +76,14 @@ function Navbar() {
       className="sticky top-0 z-50 border-b border-(--text-secondary)/10 backdrop-blur-md"
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
-        {/* logo */}
-        <Link to="/" className="text-3xl font-bold tracking-tight">
+        {/* title */}
+        <a href="#hero" className="text-3xl font-bold tracking-tight">
           Memoir
-        </Link>
+        </a>
 
         {/* desktop nav */}
         <div className="hidden items-center gap-8 md:flex">
-          <Link to="/" className="transition-colors hover:text-(--accent)">
+          <Link to="/#" className="transition-colors hover:text-(--accent)">
             Home
           </Link>
 
@@ -92,6 +92,13 @@ function Navbar() {
             className="transition-colors hover:text-(--accent)"
           >
             Features
+          </a>
+
+          <a
+            href="#testimonials"
+            className="transition-colors hover:text-(--accent)"
+          >
+            Testimonials
           </a>
 
           {isAuthenticated ? (
@@ -268,6 +275,8 @@ function Navbar() {
               </Link>
 
               <a href="#features">Features</a>
+
+              <a href="#testimonials">Testimonials</a>
 
               {isAuthenticated ? (
                 <>

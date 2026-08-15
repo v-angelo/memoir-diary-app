@@ -16,7 +16,10 @@ function HeroSection() {
   });
 
   return (
-    <section className="relative mx-auto max-w-7xl items-center overflow-hidden px-6 py-10 lg:py-14">
+    <section
+      id="hero"
+      className="relative mx-auto max-w-7xl scroll-mt-24 items-center overflow-hidden px-6 py-10 lg:py-14"
+    >
       <div className="grid items-center gap-16 lg:grid-cols-2">
         {/* left content */}
         <motion.div
