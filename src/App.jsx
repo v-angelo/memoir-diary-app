@@ -18,6 +18,9 @@ import Journal from "./pages/Journal";
 import Profile from "./pages/Profile";
 import PnF from "./pages/PnF";
 import ScrollToTop from "./components/layout/ScrollToTop";
+import AdminDashboard from "./admin/AdminDashboard";
+import AdminRoute from "./admin/AdminRoute";
+import UserRoute from "./components/auth/UserRoute";
 
 function App() {
   const { theme } = useContext(ThemeContext);
@@ -63,18 +66,18 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute>
+              <UserRoute>
                 <Dashboard />
-              </ProtectedRoute>
+              </UserRoute>
             }
           />
 
           <Route
             path="/journal"
             element={
-              <ProtectedRoute>
+              <UserRoute>
                 <Journal />
-              </ProtectedRoute>
+              </UserRoute>
             }
           />
 
@@ -88,6 +91,15 @@ function App() {
           />
 
           <Route path="*" element={<PnF />} />
+
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
         </Routes>
 
         <ToastContainer

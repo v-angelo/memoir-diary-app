@@ -47,9 +47,11 @@ function LoginPage() {
 
         toast.success(response.message);
 
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1500);
+        if (response.data.user.role === "admin") {
+          navigate("/admin", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
       } catch (error) {
         toast.error(error.response?.data?.message || "Login failed!");
       }

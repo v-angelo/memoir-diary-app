@@ -208,16 +208,16 @@ function Dashboard() {
               </div>
 
               {/* right side */}
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-4">
                 <div className="relative">
                   <HiOutlineMagnifyingGlass className="absolute top-1/2 left-4 -translate-y-1/2 text-lg text-(--text-secondary)" />
 
                   <input
                     type="text"
-                    placeholder="Search entries..."
+                    placeholder="Search entries by Title..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full rounded-2xl border border-white/10 bg-(--bg-secondary) py-3 pr-5 pl-12 outline-none"
+                    className="w-full rounded-2xl border border-white/10 bg-(--bg-secondary) py-3 pr-5 pl-10 outline-none"
                   />
                 </div>
 

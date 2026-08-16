@@ -263,14 +263,14 @@ function EntryModal({
                   <>
                     <button
                       onClick={() => onDelete(entry)}
-                      className="cursor-pointer rounded-xl border border-red-500 px-5 py-3 text-red-500"
+                      className="cursor-pointer rounded-xl border border-red-500 px-4 py-2 text-red-500 transition hover:bg-red-500 hover:text-white"
                     >
                       Delete
                     </button>
 
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="cursor-pointer rounded-xl border border-(--accent) px-5 py-3 text-(--accent)"
+                      className="cursor-pointer rounded-xl border border-(--accent) px-4 py-2 text-(--accent) transition hover:bg-(--accent) hover:text-white"
                     >
                       Edit
                     </button>

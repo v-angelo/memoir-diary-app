@@ -77,14 +77,25 @@ function DashboardNavbar() {
             Dashboard
           </Link>
 
-          <Link
-            to="/journal"
-            className={`transition-colors hover:text-(--accent) ${
-              location.pathname === "/journal" ? "text-(--accent)" : ""
-            }`}
-          >
-            Journal
-          </Link>
+          {user?.role === "admin" ? (
+            <Link
+              to="/profile"
+              className={`transition-colors hover:text-(--accent) ${
+                location.pathname === "/profile" ? "text-(--accent)" : ""
+              }`}
+            >
+              Profile
+            </Link>
+          ) : (
+            <Link
+              to="/journal"
+              className={`transition-colors hover:text-(--accent) ${
+                location.pathname === "/journal" ? "text-(--accent)" : ""
+              }`}
+            >
+              Journal
+            </Link>
+          )}
         </div>
 
         {/* right side */}
