@@ -34,6 +34,8 @@ function Journal() {
 
   const [entryDates, setEntryDates] = useState([]);
 
+  const [loadingEntries, setLoadingEntries] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -63,6 +65,10 @@ function Journal() {
 
   const loadEntries = async () => {
     try {
+      setLoadingEntries(true);
+
+      setEntries([]);
+
       const formattedDate = formatDate(selectedDate);
 
       const response = await getEntriesByDateAPI(formattedDate);
@@ -72,6 +78,8 @@ function Journal() {
       setEntries(response.data || []);
     } catch (error) {
       setEntries([]);
+    } finally {
+      setLoadingEntries(false);
     }
   };
 
@@ -267,7 +275,9 @@ function Journal() {
                   </h2>
 
                   <p className="text-(--text-secondary)">
-                    {entries.length} entries
+                    {loadingEntries
+                      ? "Loading..."
+                      : `${entries.length} entries`}
                   </p>
                 </div>
 
@@ -288,7 +298,24 @@ function Journal() {
 
               {/* entries list */}
               <div className="mt-6 flex-1 overflow-y-auto p-1">
-                {entries.length === 0 ? (
+                {loadingEntries ? (
+                  <div className="space-y-4">
+                    {[1, 2, 3].map((item) => (
+                      <div
+                        key={item}
+                        className="animate-pulse rounded-3xl bg-(--bg-primary) p-5"
+                      >
+                        <div className="mb-3 h-5 w-1/3 rounded bg-white/10" />
+
+                        <div className="mb-2 h-4 w-full rounded bg-white/10" />
+
+                        <div className="mb-2 h-4 w-4/5 rounded bg-white/10" />
+
+                        <div className="h-4 w-2/3 rounded bg-white/10" />
+                      </div>
+                    ))}
+                  </div>
+                ) : entries.length === 0 ? (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}

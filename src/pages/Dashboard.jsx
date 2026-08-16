@@ -22,6 +22,8 @@ function Dashboard() {
 
   const [entries, setEntries] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+
   const [stats, setStats] = useState({
     currentStreak: 0,
     longestStreak: 0,
@@ -37,6 +39,8 @@ function Dashboard() {
   }, []);
 
   const loadDashboardData = async () => {
+    setLoading(true);
+
     try {
       const response = await getEntriesAPI();
 
@@ -64,6 +68,8 @@ function Dashboard() {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -118,57 +124,75 @@ function Dashboard() {
               Capture your thoughts, reflections, and moments before they fade
               away.
             </p>
+
+            {loading && (
+              <div className="mt-4 flex items-center gap-3 text-sm text-(--text-secondary)">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-(--accent) border-t-transparent" />
+                <span>Loading your memories...</span>
+              </div>
+            )}
           </motion.div>
 
           {/* stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="mt-12 grid gap-6 md:grid-cols-4"
-          >
-            <div className="rounded-3xl bg-(--bg-secondary) p-6">
-              <h3 className="text-(--text-secondary)">Entries</h3>
-
-              <p className="mt-3 text-4xl font-bold">{entries.length}</p>
+          {loading ? (
+            <div className="mt-12 grid gap-6 md:grid-cols-4">
+              {[...Array(4)].map((_, index) => (
+                <div
+                  key={index}
+                  className="h-36 animate-pulse rounded-3xl bg-(--bg-secondary)"
+                />
+              ))}
             </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="mt-12 grid gap-6 md:grid-cols-4"
+            >
+              <div className="rounded-3xl bg-(--bg-secondary) p-6">
+                <h3 className="text-(--text-secondary)">Entries</h3>
 
-            <div className="rounded-3xl bg-(--bg-secondary) p-6">
-              <h3 className="text-(--text-secondary)">Favorite Mood</h3>
-
-              <div className="mt-3 flex items-center gap-3">
-                {stats.mostCommonMood ? (
-                  <>
-                    <span className="text-4xl">
-                      {moodMap[stats.mostCommonMood]}
-                    </span>
-
-                    <span className="text-2xl font-bold capitalize">
-                      {stats.mostCommonMood}
-                    </span>
-                  </>
-                ) : (
-                  <span className="text-4xl font-bold">—</span>
-                )}
+                <p className="mt-3 text-4xl font-bold">{entries.length}</p>
               </div>
-            </div>
 
-            <div className="rounded-3xl bg-(--bg-secondary) p-6">
-              <h3 className="text-(--text-secondary)">Current Streak</h3>
+              <div className="rounded-3xl bg-(--bg-secondary) p-6">
+                <h3 className="text-(--text-secondary)">Favorite Mood</h3>
 
-              <p className="mt-3 flex items-center gap-2 text-4xl font-bold">
-                🔥 {stats.currentStreak}
-              </p>
-            </div>
+                <div className="mt-3 flex items-center gap-3">
+                  {stats.mostCommonMood ? (
+                    <>
+                      <span className="text-4xl">
+                        {moodMap[stats.mostCommonMood]}
+                      </span>
 
-            <div className="rounded-3xl bg-(--bg-secondary) p-6">
-              <h3 className="text-(--text-secondary)">Longest Streak</h3>
+                      <span className="text-2xl font-bold capitalize">
+                        {stats.mostCommonMood}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-4xl font-bold">—</span>
+                  )}
+                </div>
+              </div>
 
-              <p className="mt-3 flex items-center gap-2 text-4xl font-bold">
-                🏆 {stats.longestStreak}
-              </p>
-            </div>
-          </motion.div>
+              <div className="rounded-3xl bg-(--bg-secondary) p-6">
+                <h3 className="text-(--text-secondary)">Current Streak</h3>
+
+                <p className="mt-3 flex items-center gap-2 text-4xl font-bold">
+                  🔥 {stats.currentStreak}
+                </p>
+              </div>
+
+              <div className="rounded-3xl bg-(--bg-secondary) p-6">
+                <h3 className="text-(--text-secondary)">Longest Streak</h3>
+
+                <p className="mt-3 flex items-center gap-2 text-4xl font-bold">
+                  🏆 {stats.longestStreak}
+                </p>
+              </div>
+            </motion.div>
+          )}
 
           {/* new entry link */}
           <motion.div
@@ -237,7 +261,16 @@ function Dashboard() {
               </div>
             </div>
 
-            {entries.length === 0 ? (
+            {loading ? (
+              <div className="mt-6 space-y-4">
+                {[...Array(5)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="h-28 animate-pulse rounded-2xl bg-(--bg-secondary)"
+                  />
+                ))}
+              </div>
+            ) : entries.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}

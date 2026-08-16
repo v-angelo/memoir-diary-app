@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion } from "motion/react";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ThemeContext, themeStyles } from "./context/ThemeContext";
 
 import LandingPage from "./pages/LandingPage";
