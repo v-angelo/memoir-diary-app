@@ -1,5 +1,9 @@
 import { motion } from "motion/react";
-import { moodMap, formatTime } from "../../utilities/journalUtils";
+import {
+  moodMap,
+  formatTime,
+  getEntryPreview,
+} from "../../utilities/journalUtils";
 
 function EntryCard({ entry, index, onClick }) {
   return (
@@ -47,7 +51,7 @@ function EntryCard({ entry, index, onClick }) {
       </div>
 
       <p className="mt-3 line-clamp-5 text-(--text-secondary) lg:line-clamp-3">
-        {entry?.content}
+        {getEntryPreview(entry?.content)}
       </p>
     </motion.div>
   );

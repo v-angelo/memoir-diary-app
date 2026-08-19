@@ -11,7 +11,11 @@ import { HiOutlineBookOpen, HiOutlinePlus } from "react-icons/hi";
 import { getEntriesAPI } from "../services/entryService";
 
 import { calculateStreaks } from "../utilities/streakUtils";
-import { moodMap, formatTime } from "../utilities/journalUtils";
+import {
+  moodMap,
+  formatTime,
+  getEntryPreview,
+} from "../utilities/journalUtils";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 
 function Dashboard() {
@@ -352,7 +356,7 @@ function Dashboard() {
                       </div>
 
                       <p className="mt-2 line-clamp-2 text-(--text-secondary)">
-                        {entry.content}
+                        {getEntryPreview(entry.content)}
                       </p>
                     </motion.div>
                   ))}

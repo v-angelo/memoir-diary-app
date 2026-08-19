@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { ThemeContext, themeStyles } from "../../context/ThemeContext";
 import { formatTime, moodMap } from "../../utilities/journalUtils";
+import RichTextEditor from "./RichTextEditor";
 
 function EntryModal({
   isOpen,
@@ -176,10 +177,10 @@ function EntryModal({
                         })
                       }
                       placeholder="Entry title..."
-                      className="mb-4 w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
+                      className="mb-4 w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 text-3xl font-extrabold outline-none"
                     />
                   ) : (
-                    <h1 className="mb-4 text-3xl font-bold tracking-tight">
+                    <h1 className="mb-4 text-4xl font-extrabold tracking-tight">
                       {formData.title}
                     </h1>
                   )}
@@ -235,29 +236,27 @@ function EntryModal({
 
                   {/* content */}
                   {isEditing ? (
-                    <textarea
-                      rows={12}
+                    <RichTextEditor
                       value={formData.content}
-                      onChange={(e) =>
+                      onChange={(content) =>
                         setFormData({
                           ...formData,
-                          content: e.target.value,
+                          content,
                         })
                       }
-                      placeholder="What's on your mind today?"
-                      className="w-full rounded-2xl border border-white/10 bg-(--bg-primary) px-4 py-3 outline-none"
                     />
                   ) : (
-                    <div className="prose prose-invert max-w-none">
-                      <p className="leading-8 whitespace-pre-wrap text-(--text-primary)">
-                        {formData.content}
-                      </p>
-                    </div>
+                    <div
+                      className="memoir-content max-w-none text-(--text-primary)"
+                      dangerouslySetInnerHTML={{
+                        __html: formData.content,
+                      }}
+                    />
                   )}
                 </motion.div>
               </AnimatePresence>
 
-              {/* footer */}
+              {/* bottom part */}
               <div className="mt-6 flex flex-wrap justify-end gap-3">
                 {entry && !isEditing && (
                   <>

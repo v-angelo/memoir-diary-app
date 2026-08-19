@@ -34,3 +34,14 @@ export const getInitials = (name = "") => {
     .map((word) => word[0].toUpperCase())
     .join("");
 };
+
+export function getEntryPreview(content, maxLength = 180) {
+  if (!content) return "";
+
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = content;
+
+  const text = tempDiv.textContent || tempDiv.innerText || "";
+
+  return text.trim().slice(0, maxLength);
+}
