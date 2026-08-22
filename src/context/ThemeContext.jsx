@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { AuthContext } from "./AuthContext";
 
 export const ThemeContext = createContext();
 
@@ -131,6 +132,28 @@ const themeColors = {
 };
 
 function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || getSystemTheme();
+  });
+
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user?.preferredTheme) {
+      setTheme(user.preferredTheme);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const html = document.documentElement;
+
+    html.classList.remove(...themes);
+
+    html.classList.add(theme);
+
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   // get system theme
   const getSystemTheme = () => {
     const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
@@ -142,20 +165,6 @@ function ThemeProvider({ children }) {
 
     return systemTheme;
   };
-
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || getSystemTheme();
-  });
-
-  useEffect(() => {
-    const html = document.documentElement;
-
-    html.classList.remove(...themes);
-
-    html.classList.add(theme);
-
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   return (
     <ThemeContext.Provider

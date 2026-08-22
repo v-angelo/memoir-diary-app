@@ -43,6 +43,8 @@ function Profile() {
       // remove profile pic
       reqBody.append("removeProfilePic", formData.removeProfilePic);
 
+      reqBody.append("preferredTheme", formData.preferredTheme);
+
       const response = await updateUserAPI(user._id, reqBody);
 
       const updatedUser = response.data;

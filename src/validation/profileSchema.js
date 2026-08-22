@@ -21,4 +21,18 @@ export const profileSchema = Yup.object({
         .oneOf([Yup.ref("password")], "Passwords do not match"),
     otherwise: (schema) => schema.notRequired(),
   }),
+
+  preferredTheme: Yup.string().oneOf([
+    "",
+    "light",
+    "dark",
+    "sepia",
+    "forest",
+    "sunset",
+    "midnight",
+    "ocean",
+    "coffee",
+    "rose",
+    "matrix",
+  ]),
 });

@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useFormik } from "formik";
 
 import { ThemeContext, themeStyles } from "../../context/ThemeContext";
+import { AuthContext } from "../../context/AuthContext";
 import { getInitials } from "../../utilities/journalUtils";
 import { profileSchema } from "../../validation/profileSchema";
 
@@ -10,7 +11,9 @@ import { HiOutlineTrash } from "react-icons/hi2";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
 function ProfileModal({ isOpen, user, onClose, onSave }) {
-  const { theme } = useContext(ThemeContext);
+  const { theme, themes, themeColors } = useContext(ThemeContext);
+
+  const { isAuthenticated } = useContext(AuthContext);
 
   const colors = themeStyles[theme];
 
@@ -31,6 +34,7 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
     initialValues: {
       username: user?.username || "",
       email: user?.email || "",
+      preferredTheme: user?.preferredTheme || theme,
       password: "",
       confirmPassword: "",
       imageUrl: user?.profilePic?.includes("/files/")
@@ -288,6 +292,52 @@ function ProfileModal({ isOpen, user, onClose, onSave }) {
                       {formik.errors.confirmPassword}
                     </p>
                   )}
+
+                {/* preferred theme */}
+                <div className="mb-4 flex items-center justify-between gap-4">
+                  <label
+                    htmlFor="preferredTheme"
+                    className="ml-2 text-sm font-medium text-(--text-secondary) sm:text-base"
+                  >
+                    Preferred Theme
+                  </label>
+
+                  <div className="flex items-center gap-2">
+                    {/* theme color preview */}
+                    <div
+                      className="h-4 w-4 shrink-0 rounded-full border border-white/20"
+                      style={{
+                        backgroundColor:
+                          themeColors[formik.values.preferredTheme || theme],
+                      }}
+                    />
+
+                    <select
+                      id="preferredTheme"
+                      name="preferredTheme"
+                      value={formik.values.preferredTheme}
+                      onChange={formik.handleChange}
+                      className="w-40 cursor-pointer rounded-xl border border-white/10 bg-(--bg-primary) px-3 py-2 text-sm outline-none sm:w-50 sm:text-base"
+                    >
+                      <option value="">Use Current Theme</option>
+
+                      <optgroup label="Free Themes">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                      </optgroup>
+
+                      <optgroup label="Premium Themes">
+                        {themes
+                          .filter((t) => !["light", "dark"].includes(t))
+                          .map((t) => (
+                            <option key={t} value={t}>
+                              {t.charAt(0).toUpperCase() + t.slice(1)}
+                            </option>
+                          ))}
+                      </optgroup>
+                    </select>
+                  </div>
+                </div>
 
                 {/* footer */}
                 <div className="mt-6 flex justify-end gap-3">
